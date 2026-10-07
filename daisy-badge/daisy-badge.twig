@@ -1,0 +1,125 @@
+{#
+/**
+ * @file
+ * daisy-badge.twig
+ *
+ * Universal DaisyUI Badge Component.
+ * Supports DaisyUI 5 colors, modifier variants, sizes, text color overrides,
+ * icons, links, SDC content slot, and Drupal attributes.
+ */
+#}
+
+{% set target_url = url|default(href)|default('') %}
+{% set has_url = target_url is not empty %}
+{% set badge_label = label|default('') %}
+{% set badge_style = style|default('primary') %}
+{% set badge_size = size|default('md') %}
+{% set badge_variant = variant|default('solid') %}
+{% set badge_text_color = text_color|default('default') %}
+{% set badge_icon = icon|default('') %}
+{% set badge_icon_pack = icon_pack|default('phosphor') %}
+{% set is_icon_start = (icon_position|default(icon_first is defined and not icon_first ? 'end' : 'start')) == 'start' %}
+{% set is_open_new = open_in_new_tab|default(false) %}
+
+{# Class mapping dictionaries #}
+{% set style_classes = {
+  primary: 'badge-primary',
+  secondary: 'badge-secondary',
+  accent: 'badge-accent',
+  neutral: 'badge-neutral',
+  muted: 'bg-base-200 text-base-content border-transparent',
+  info: 'badge-info',
+  success: 'badge-success',
+  warning: 'badge-warning',
+  error: 'badge-error',
+  ghost: 'badge-ghost'
+} %}
+
+{% set size_classes = {
+  xs: 'badge-xs',
+  sm: 'badge-sm',
+  md: '',
+  lg: 'badge-lg',
+  xl: 'badge-xl'
+} %}
+
+{% set variant_classes = {
+  solid: '',
+  outline: 'badge-outline',
+  soft: 'badge-soft',
+  dash: 'badge-dash'
+} %}
+
+{% set text_color_classes = {
+  black: 'text-black!',
+  white: 'text-white!',
+  primary: 'text-primary!'
+} %}
+
+{# Build class list #}
+{% set classes = [
+  'badge',
+  style_classes[badge_style]|default('badge-primary'),
+  size_classes[badge_size]|default(''),
+  variant_classes[badge_variant]|default(''),
+  text_color_classes[badge_text_color]|default(''),
+  has_url ? 'cursor-pointer no-underline hover:opacity-90' : ''
+]|filter(v => v is not empty) %}
+
+{# Normalize badge_classes #}
+{% set extra_classes = badge_classes|default('') %}
+{% if extra_classes is iterable %}
+  {% set extra_classes = extra_classes|join(' ') %}
+{% endif %}
+
+{# Prepare Drupal attributes #}
+{% set badge_attributes = attributes is defined and attributes is not empty ? attributes : create_attribute() %}
+{% set badge_attributes = badge_attributes.addClass(classes) %}
+{% if extra_classes is not empty %}
+  {% set badge_attributes = badge_attributes.addClass(extra_classes|split(' ')) %}
+{% endif %}
+
+{% if aria_label is defined and aria_label is not empty %}
+  {% set badge_attributes = badge_attributes.setAttribute('aria-label', aria_label) %}
+{% endif %}
+
+{% macro render_icon(icon_pack, icon_name) %}
+  {% if icon_name is not empty and icon_name != 'none' %}
+    <span class="inline-flex size-[1em] shrink-0 items-center justify-center [&>svg]:size-full" aria-hidden="true">
+      {{ icon(icon_pack, icon_name, { color: 'currentColor' }) }}
+    </span>
+  {% endif %}
+{% endmacro %}
+
+{% import _self as macros %}
+
+{# Capture custom content slot #}
+{% set custom_content %}
+  {% block content %}
+    {% if content is defined and content is not empty %}{{ content }}{% endif %}
+  {% endblock %}
+{% endset %}
+
+{% set badge_body %}
+  {% if custom_content|trim is not empty %}
+    {{ custom_content }}
+  {% else %}
+    {% if is_icon_start and badge_icon is not empty %}{{ macros.render_icon(badge_icon_pack, badge_icon) }}{% endif %}
+    {% if badge_label is not empty %}<span>{{ badge_label }}</span>{% endif %}
+    {% if not is_icon_start and badge_icon is not empty %}{{ macros.render_icon(badge_icon_pack, badge_icon) }}{% endif %}
+  {% endif %}
+{% endset %}
+
+{% if has_url %}
+  {% set badge_attributes = badge_attributes.setAttribute('href', target_url) %}
+  {% if is_open_new %}
+    {% set badge_attributes = badge_attributes.setAttribute('target', '_blank').setAttribute('rel', 'noopener noreferrer') %}
+  {% endif %}
+  <a {{ badge_attributes }}>
+    {{ badge_body }}
+  </a>
+{% else %}
+  <span {{ badge_attributes }}>
+    {{ badge_body }}
+  </span>
+{% endif %}

@@ -1,0 +1,217 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Daisy Card
+description: "Universal DaisyUI Card component supporting vertical/horizontal orientations, 10px accent borders, image overlays, and slots (header, content, actions)."
+group: DaisyUI
+status: stable
+props:
+  type: object
+  properties:
+    heading_text:
+      type: string
+      title: Heading
+      description: "Default card title (used when the header slot is not supplied)."
+      examples:
+        - "Card Title"
+    level:
+      type: number
+      title: Heading Level
+      enum:
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+      default: 3
+      examples:
+        - 3
+    url:
+      type: string
+      title: Link URL
+      format: uri-reference
+      examples:
+        - "/articles/my-post"
+    media:
+      $ref: json-schema-definitions://canvas.module/image
+      title: Image Media
+      type: object
+    caption:
+      type: string
+      title: Image Caption
+      examples:
+        - "Photo caption"
+    aspect_ratio:
+      type: string
+      title: Media Aspect Ratio
+      enum:
+        - auto
+        - "16:9"
+        - "4:3"
+        - "1:1"
+        - "3:2"
+        - "2:1"
+      default: auto
+      meta:enum:
+        auto: "Natural / Auto"
+        "16:9": "16:9 (Widescreen)"
+        "4:3": "4:3 (Standard)"
+        "1:1": "1:1 (Square)"
+        "3:2": "3:2"
+        "2:1": "2:1"
+      examples:
+        - auto
+    text:
+      type: string
+      title: Description / Body Text
+      contentMediaType: text/html
+      x-formatting-context: block
+      examples:
+        - "<p>Engaging summary text for the card content.</p>"
+    is_text_centered:
+      type: boolean
+      title: Center Text
+      default: false
+      examples:
+        - false
+    orientation:
+      type: string
+      title: Orientation
+      enum:
+        - vertical
+        - horizontal
+      default: vertical
+      meta:enum:
+        vertical: "Vertical (Standard)"
+        horizontal: "Horizontal (Side-by-side)"
+      examples:
+        - vertical
+    height:
+      type: string
+      title: Card Height
+      enum:
+        - auto
+        - full
+      default: auto
+      meta:enum:
+        auto: "Auto (Fits content)"
+        full: "Full (Equal height in grid)"
+      examples:
+        - auto
+    style:
+      type: string
+      title: Style Mode
+      enum:
+        - full
+        - framed
+        - border
+        - dash
+        - overlay
+      default: full
+      meta:enum:
+        full: "Full (Default)"
+        framed: "Framed (Padded with inset)"
+        border: "Bordered (card-border)"
+        dash: "Dashed border (card-dash)"
+        overlay: "Image overlay (image-full)"
+      examples:
+        - full
+    size:
+      type: string
+      title: Size
+      enum:
+        - sm
+        - md
+        - lg
+        - xl
+      default: md
+      meta:enum:
+        sm: Small
+        md: Medium (Default)
+        lg: Large
+        xl: Extra Large
+      examples:
+        - md
+    background:
+      type: string
+      title: Background Surface
+      enum:
+        - default
+        - base-200
+        - base-300
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - transparent
+      default: default
+      meta:enum:
+        default: "Default (Base 100)"
+        base-200: "Base 200"
+        base-300: "Base 300"
+        primary: "Primary"
+        secondary: "Secondary"
+        accent: "Accent"
+        neutral: "Neutral"
+        transparent: "Transparent"
+      examples:
+        - default
+    shadow:
+      type: string
+      title: Shadow Elevation
+      enum:
+        - none
+        - sm
+        - md
+        - lg
+        - xl
+        - 2xl
+      default: xl
+      meta:enum:
+        none: None
+        sm: Small
+        md: Medium
+        lg: Large
+        xl: Extra Large
+        2xl: 2X Large
+      examples:
+        - xl
+    border_top:
+      type: boolean
+      title: 10px Top Border Accent
+      description: "Applies a prominent 10px top accent border to the card header edge."
+      default: false
+      examples:
+        - false
+        - true
+    border_top_color:
+      type: string
+      title: Top Border Color
+      description: "Color token for the 10px top border accent."
+      enum:
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - base-300
+      default: primary
+      meta:enum:
+        primary: Primary
+        secondary: Secondary
+        accent: Accent
+        neutral: Neutral
+        base-300: Base 300
+      examples:
+        - primary
+    card_classes:
+      type: string
+      title: Additional Classes
+      description: "Additional CSS utility classes."
+slots:
+  header:
+    title: Card Header
+    description: "Slot for custom header content (icon + title, stacked icon tile, badge, avatar, or custom heading markup). Overrides default heading_text."
+  content:
+    title: Custom Card Content
+    description: "Slot for custom body content, badges, metadata, or author chips inside the card body."
+  actions:
+    title: Card Actions
+    description: "Slot for action buttons or links inside .card-actions."

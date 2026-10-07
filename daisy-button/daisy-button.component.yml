@@ -1,0 +1,189 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Daisy Button
+description: "Universal DaisyUI button component supporting semantic colors, modifiers, shapes, icons, and slots."
+group: DaisyUI
+status: stable
+props:
+  type: object
+  properties:
+    label:
+      type: string
+      title: Button Label
+      default: "Button"
+      examples:
+        - "Click Here"
+    url:
+      type: string
+      title: Link URL
+      description: "Optional URL. If provided, renders an <a> link; otherwise renders a <button>."
+      format: uri-reference
+      examples:
+        - "/about"
+        - "https://example.com"
+    style:
+      type: string
+      title: Style / Color
+      description: "DaisyUI semantic color token."
+      enum:
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - info
+        - success
+        - warning
+        - error
+        - ghost
+        - link
+      meta:enum:
+        primary: Primary
+        secondary: Secondary
+        accent: Accent
+        neutral: Neutral
+        info: Info
+        success: Success
+        warning: Warning
+        error: Error
+        ghost: Ghost
+        link: Link
+      default: primary
+      examples:
+        - primary
+    variant:
+      type: string
+      title: Style Modifier
+      description: "Visual appearance style (solid, outline, soft, dashed)."
+      enum:
+        - solid
+        - outline
+        - soft
+        - dash
+      meta:enum:
+        solid: Solid (Default)
+        outline: Outline
+        soft: Soft Tint
+        dash: Dashed Outline
+      default: solid
+      examples:
+        - solid
+    size:
+      type: string
+      title: Button Size
+      enum:
+        - xs
+        - sm
+        - md
+        - lg
+        - xl
+      meta:enum:
+        xs: Extra Small
+        sm: Small
+        md: Medium (Default)
+        lg: Large
+        xl: Extra Large
+      default: md
+      examples:
+        - md
+    shape:
+      type: string
+      title: Shape / Width
+      enum:
+        - default
+        - wide
+        - block
+        - square
+        - circle
+      meta:enum:
+        default: Default (Auto width)
+        wide: Wide (min-w-64)
+        block: Full width (block)
+        square: Square (1:1 aspect)
+        circle: Circle
+      default: default
+      examples:
+        - default
+    icon:
+      type: string
+      title: Icon Name
+      description: "Optional icon identifier rendered via Drupal core Icon API (defaults to Phosphor pack)."
+      examples:
+        - "arrow-right"
+        - "arrow-left"
+        - "download"
+        - "plus"
+    icon_position:
+      type: string
+      title: Icon Position
+      enum:
+        - start
+        - end
+      meta:enum:
+        start: "Before label (Left)"
+        end: "After label (Right)"
+      default: start
+      examples:
+        - start
+    icon_pack:
+      type: string
+      title: Icon Pack
+      description: "Icon pack identifier used by Drupal core Icon API."
+      default: phosphor
+      examples:
+        - phosphor
+    tooltip:
+      type: string
+      title: Tooltip Text
+      description: "Optional text displayed in a DaisyUI hover tooltip bubble."
+      examples:
+        - "Click to learn more"
+    open_in_new_tab:
+      type: boolean
+      title: Open in new tab
+      description: "When true, opens link in a new window/tab with rel=\"noopener noreferrer\"."
+      default: false
+      examples:
+        - false
+    disabled:
+      type: boolean
+      title: Disabled
+      description: "Disables interaction and applies disabled styling and aria-disabled attributes."
+      default: false
+      examples:
+        - false
+    button_type:
+      type: string
+      title: Button Type
+      description: "Type attribute when rendered as a <button> element."
+      enum:
+        - button
+        - submit
+        - reset
+      default: button
+      examples:
+        - button
+    aria_label:
+      type: string
+      title: Accessible Name (aria-label)
+      description: "Optional accessible name for assistive technology (recommended for icon-only buttons)."
+      examples:
+        - "Close dialog"
+    title:
+      type: string
+      title: Title Attribute
+      description: "Standard HTML title hover attribute."
+      examples:
+        - "More information"
+    data_theme:
+      type: string
+      title: Theme Override
+      description: "Optional DaisyUI theme name applied directly to the button via data-theme."
+      examples:
+        - "dark"
+        - "light"
+slots:
+  prefix:
+    title: Prefix Content
+    description: "Optional custom markup, icon, or badge placed before the button label."
+  suffix:
+    title: Suffix Content
+    description: "Optional custom markup, icon, or badge placed after the button label."

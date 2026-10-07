@@ -1,0 +1,205 @@
+{#
+/**
+ * @file
+ * daisy-card.twig
+ *
+ * Universal DaisyUI Card Component.
+ * Supports vertical/horizontal orientations, 10px accent top border,
+ * image overlays, slots (header, content, actions), and Drupal attributes.
+ */
+#}
+
+{% set card_orientation = orientation|default('vertical') %}
+{% set card_style = style|default('full') %}
+{% set card_background = background|default('default') %}
+{% set card_size = size|default('md') %}
+{% set card_shadow = shadow|default('xl') %}
+{% set card_aspect_ratio = aspect_ratio|default('auto') %}
+{% set card_height = height|default('auto') %}
+{% set heading_level = level|default(3) %}
+{% set is_centered = is_text_centered|default(false) %}
+{% set target_url = url|default(href)|default('') %}
+{% set has_url = target_url is not empty %}
+{% set has_media = media is defined and media.src is not empty %}
+{% set has_border_top = border_top|default(false) %}
+{% set top_border_color = border_top_color|default('primary') %}
+
+{# Normalize card_classes #}
+{% set extra_classes = card_classes|default('') %}
+{% if extra_classes is iterable %}
+  {% set extra_classes = extra_classes|join(' ') %}
+{% endif %}
+
+{# Class mapping dictionaries #}
+{% set background_classes = {
+  default: 'bg-base-100 text-base-content',
+  'base-200': 'bg-base-200 text-base-content',
+  'base-300': 'bg-base-300 text-base-content',
+  primary: 'bg-primary text-primary-content',
+  secondary: 'bg-secondary text-secondary-content',
+  accent: 'bg-accent text-accent-content',
+  neutral: 'bg-neutral text-neutral-content',
+  transparent: 'bg-transparent text-base-content'
+} %}
+
+{% set orientation_classes = {
+  vertical: '',
+  horizontal: 'md:card-side'
+} %}
+
+{% set style_classes = {
+  full: '',
+  framed: 'p-4 lg:p-6 gap-4',
+  border: 'card-border',
+  dash: 'card-dash',
+  overlay: 'image-full'
+} %}
+
+{% set size_classes = {
+  sm: 'card-sm',
+  md: '',
+  lg: 'card-lg',
+  xl: 'card-xl'
+} %}
+
+{% set shadow_classes = {
+  sm: 'shadow-sm',
+  md: 'shadow-md',
+  lg: 'shadow-lg',
+  xl: 'shadow-xl',
+  '2xl': 'shadow-2xl'
+} %}
+
+{% set aspect_ratio_classes = {
+  auto: 'aspect-auto',
+  '16:9': 'aspect-16/9',
+  '4:3': 'aspect-4/3',
+  '1:1': 'aspect-1/1',
+  '3:2': 'aspect-3/2',
+  '2:1': 'aspect-2/1'
+} %}
+
+{% set height_classes = {
+  auto: 'self-start h-auto! in-[.views-row]:h-full! in-[.views-row]:self-stretch!',
+  full: 'h-full'
+} %}
+
+{% set border_top_color_classes = {
+  primary: 'border-t-primary',
+  secondary: 'border-t-secondary',
+  accent: 'border-t-accent',
+  neutral: 'border-t-neutral',
+  'base-300': 'border-t-base-300'
+} %}
+
+{# Build class list #}
+{% set classes = [
+  'card',
+  'w-full',
+  height_classes[card_height]|default(height_classes.auto),
+  'group relative',
+  'transition duration-300',
+  orientation_classes[card_orientation]|default(''),
+  style_classes[card_style]|default(''),
+  background_classes[card_background]|default(background_classes.default),
+  size_classes[card_size]|default(''),
+  card_shadow == 'none' ? 'shadow-none' : shadow_classes[card_shadow]|default('shadow-xl'),
+  has_url ? 'cursor-pointer hover:scale-[1.01]' : '',
+  has_border_top ? 'border-t-[10px] ' ~ border_top_color_classes[top_border_color]|default('border-t-primary') : ''
+]|filter(v => v is not empty) %}
+
+{# Figure classes #}
+{% set is_auto_aspect = card_aspect_ratio == 'auto' %}
+{% set figure_classes = [
+  'relative overflow-hidden shrink-0 w-full',
+  card_style == 'framed' ? 'rounded-lg' : '',
+  card_orientation == 'horizontal' ? 'md:w-auto md:max-w-xs lg:max-w-sm' : '',
+  aspect_ratio_classes[card_aspect_ratio]|default('aspect-auto')
+]|filter(v => v is not empty)|join(' ') %}
+
+{% set img_classes = is_auto_aspect ? 'w-full h-auto' : 'object-cover w-full h-full' %}
+
+{# Prepare Drupal attributes #}
+{% set card_attributes = attributes is defined and attributes is not empty ? attributes : create_attribute() %}
+{% set card_attributes = card_attributes.addClass(classes) %}
+{% if extra_classes is not empty %}
+  {% set card_attributes = card_attributes.addClass(extra_classes|split(' ')) %}
+{% endif %}
+
+<div {{ card_attributes }}>
+  {% if has_media %}
+    <figure class="{{ figure_classes }}">
+      <img
+        src="{{ media.src }}"
+        alt="{{ media.alt|default('') }}"
+        class="{{ img_classes }}"
+        width="{{ media.width|default('') }}"
+        height="{{ media.height|default('') }}"
+        loading="lazy"
+      />
+      {% if caption is defined and caption is not empty %}
+        <figcaption class="pointer-events-none absolute bottom-2 left-2 z-10 line-clamp-2 max-w-[calc(100%-1rem)] rounded bg-black/60 px-2.5 py-1 text-xs text-white backdrop-blur-xs">
+          {{ caption }}
+        </figcaption>
+      {% endif %}
+    </figure>
+  {% endif %}
+
+  <div class="card-body {{ card_height == 'full' ? 'flex-1' : '' }} in-[.views-row]:flex-1 {{ is_centered ? 'items-center text-center' : 'items-start text-left' }}">
+    <div class="@container flex w-full flex-col gap-1 md:gap-2">
+      
+      {# Header area: Supports custom header slot (icon + title, stacked tile, badge, avatar) or default heading_text fallback #}
+      {% block header %}
+        {% if header is defined and header is not empty %}
+          {{ header }}
+        {% elseif heading_text is defined and heading_text is not empty %}
+          {% set heading_classes = 'card-title text-xl font-semibold @sm:text-2xl @2xl:text-3xl' %}
+          {% set heading_content %}
+            {% if has_url %}
+              <a href="{{ target_url }}" class="after:absolute after:inset-0 after:content-['']">{{ heading_text }}</a>
+            {% else %}
+              {{ heading_text }}
+            {% endif %}
+          {% endset %}
+
+          {% if heading_level == 2 %}
+            <h2 class="{{ heading_classes }}">{{ heading_content }}</h2>
+          {% elseif heading_level == 4 %}
+            <h4 class="{{ heading_classes }}">{{ heading_content }}</h4>
+          {% elseif heading_level == 5 %}
+            <h5 class="{{ heading_classes }}">{{ heading_content }}</h5>
+          {% elseif heading_level == 6 %}
+            <h6 class="{{ heading_classes }}">{{ heading_content }}</h6>
+          {% else %}
+            <h3 class="{{ heading_classes }}">{{ heading_content }}</h3>
+          {% endif %}
+        {% endif %}
+      {% endblock %}
+
+      {# Accessible stretched link fallback if custom header is used or heading_text is omitted, but card has a target URL #}
+      {% if has_url and ((header is defined and header is not empty) or heading_text is empty) %}
+        <a href="{{ target_url }}" class="sr-only after:absolute after:inset-0 after:content-['']">{{ 'View'|t }}</a>
+      {% endif %}
+
+      {# Body content slot #}
+      {% block content %}
+        {% if content is defined and content is not empty %}
+          {{ content }}
+        {% elseif text is not empty %}
+          <div class="font-body text-base md:text-lg opacity-90 [&_p]:mb-2 [&_p:last-child]:mb-0">
+            {{ text }}
+          </div>
+        {% endif %}
+      {% endblock %}
+    </div>
+
+    {# Actions slot #}
+    {% block actions %}
+      {% if actions is defined and actions is not empty %}
+        <div class="card-actions {{ is_centered ? 'justify-center' : 'justify-end' }} mt-auto pt-2">
+          {{ actions }}
+        </div>
+      {% endif %}
+    {% endblock %}
+  </div>
+</div>

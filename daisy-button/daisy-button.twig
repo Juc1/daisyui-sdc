@@ -1,0 +1,167 @@
+{#
+/**
+ * @file
+ * daisy-button.twig
+ *
+ * Universal DaisyUI Button Component.
+ * Supports DaisyUI 5 semantic color roles, modifier styles, shapes, tooltips,
+ * Drupal core Icon API, SDC prefix/suffix slots, and Drupal attributes.
+ */
+#}
+
+{# Normalization of props with backward-compatibility fallbacks #}
+{% set target_url = url|default(href)|default('') %}
+{% set has_url = target_url is not empty %}
+{% set button_label = label|default(has_url or icon is not empty ? '' : 'Button') %}
+{% set button_style = style|default(variant in ['primary', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error', 'ghost', 'link'] ? variant : 'primary') %}
+{% set button_variant = variant in ['solid', 'outline', 'soft', 'dash'] ? variant : (style_modifier|default('solid')) %}
+{% set button_size = size|default('md') %}
+{% set button_shape = shape|default(width == 'full' or mobile_width|default(false) ? 'block' : 'default') %}
+{% set button_icon = icon|default('') %}
+{% set button_icon_pack = icon_pack|default('phosphor') %}
+{% set is_icon_start = (icon_position|default(icon_first is defined and not icon_first ? 'end' : 'start')) == 'start' %}
+{% set is_open_new = open_in_new_tab|default(target_blank|default(false)) %}
+{% set is_disabled = disabled|default(false) %}
+{% set btn_type = button_type|default(type|default('button')) %}
+{% set btn_tooltip = tooltip|default('') %}
+{% set btn_title = title|default('') %}
+{% set btn_data_theme = data_theme|default(theme_override|default('')) %}
+
+{# DaisyUI class maps #}
+{% set style_classes = {
+  primary: 'btn-primary',
+  secondary: 'btn-secondary',
+  accent: 'btn-accent',
+  neutral: 'btn-neutral',
+  info: 'btn-info',
+  success: 'btn-success',
+  warning: 'btn-warning',
+  error: 'btn-error',
+  ghost: 'btn-ghost',
+  link: 'btn-link'
+} %}
+
+{% set variant_classes = {
+  solid: '',
+  outline: 'btn-outline',
+  soft: 'btn-soft',
+  dash: 'btn-dash'
+} %}
+
+{% set size_classes = {
+  xs: 'btn-xs',
+  sm: 'btn-sm',
+  md: '',
+  lg: 'btn-lg',
+  xl: 'btn-xl'
+} %}
+
+{% set shape_classes = {
+  default: '',
+  wide: 'btn-wide',
+  block: 'btn-block',
+  square: 'btn-square',
+  circle: 'btn-circle'
+} %}
+
+{# Build DaisyUI class list #}
+{% set classes = [
+  'btn',
+  'no-underline!',
+  style_classes[button_style]|default('btn-primary'),
+  variant_classes[button_variant]|default(''),
+  size_classes[button_size]|default(''),
+  shape_classes[button_shape]|default(''),
+  has_url and is_disabled ? 'btn-disabled pointer-events-none' : ''
+]|filter(v => v is not empty) %}
+
+{# Handle additional custom classes from props #}
+{% set extra_classes = button_classes|default(btn_classes|default('')) %}
+{% if extra_classes is iterable %}
+  {% set extra_classes = extra_classes|join(' ') %}
+{% endif %}
+
+{# Prepare Drupal attributes #}
+{% set button_attributes = attributes is defined and attributes is not empty ? attributes : create_attribute() %}
+{% set button_attributes = button_attributes.addClass(classes) %}
+{% if extra_classes is not empty %}
+  {% set button_attributes = button_attributes.addClass(extra_classes|split(' ')) %}
+{% endif %}
+
+{% if btn_data_theme is not empty %}
+  {% set button_attributes = button_attributes.setAttribute('data-theme', btn_data_theme) %}
+{% endif %}
+
+{% macro render_icon(icon_pack, icon_name) %}
+  {% if icon_name is not empty and icon_name != 'none' %}
+    <span class="inline-flex size-[1.15em] shrink-0 items-center justify-center [&>svg]:size-full" aria-hidden="true">
+      {{ icon(icon_pack, icon_name, { color: 'currentColor' }) }}
+    </span>
+  {% endif %}
+{% endmacro %}
+
+{% import _self as macros %}
+
+{# Capture prefix and suffix slots #}
+{% set prefix_content %}
+  {% block prefix %}
+    {% if prefix is defined and prefix is not empty %}{{ prefix }}{% endif %}
+  {% endblock %}
+{% endset %}
+
+{% set suffix_content %}
+  {% block suffix %}
+    {% if suffix is defined and suffix is not empty %}{{ suffix }}{% endif %}
+  {% endblock %}
+{% endset %}
+
+{# Button inner contents #}
+{% set button_content %}
+  {% if is_icon_start and button_icon is not empty %}{{ macros.render_icon(button_icon_pack, button_icon) }}{% endif %}
+  {% if prefix_content|trim is not empty %}{{ prefix_content }}{% endif %}
+  {% if button_label is not empty %}<span>{{ button_label }}</span>{% endif %}
+  {% if suffix_content|trim is not empty %}{{ suffix_content }}{% endif %}
+  {% if not is_icon_start and button_icon is not empty %}{{ macros.render_icon(button_icon_pack, button_icon) }}{% endif %}
+{% endset %}
+
+{# Tooltip wrapper #}
+{% if btn_tooltip is not empty %}
+  <span class="tooltip {{ button_shape == 'block' ? 'w-full' : '' }}" data-tip="{{ btn_tooltip }}">
+{% endif %}
+
+{% if has_url %}
+  {% set button_attributes = button_attributes.setAttribute('href', target_url) %}
+  {% if is_open_new %}
+    {% set button_attributes = button_attributes.setAttribute('target', '_blank').setAttribute('rel', 'noopener noreferrer') %}
+  {% endif %}
+  {% if is_disabled %}
+    {% set button_attributes = button_attributes.setAttribute('aria-disabled', 'true').setAttribute('tabindex', '-1') %}
+  {% endif %}
+  {% if aria_label is defined and aria_label is not empty %}
+    {% set button_attributes = button_attributes.setAttribute('aria-label', aria_label) %}
+  {% endif %}
+  {% if btn_title is not empty %}
+    {% set button_attributes = button_attributes.setAttribute('title', btn_title) %}
+  {% endif %}
+  <a {{ button_attributes }}>
+    {{ button_content }}
+  </a>
+{% else %}
+  {% set button_attributes = button_attributes.setAttribute('type', btn_type) %}
+  {% if is_disabled %}
+    {% set button_attributes = button_attributes.setAttribute('disabled', 'disabled').setAttribute('aria-disabled', 'true') %}
+  {% endif %}
+  {% if aria_label is defined and aria_label is not empty %}
+    {% set button_attributes = button_attributes.setAttribute('aria-label', aria_label) %}
+  {% endif %}
+  {% if btn_title is not empty %}
+    {% set button_attributes = button_attributes.setAttribute('title', btn_title) %}
+  {% endif %}
+  <button {{ button_attributes }}>
+    {{ button_content }}
+  </button>
+{% endif %}
+
+{% if btn_tooltip is not empty %}
+  </span>
+{% endif %}

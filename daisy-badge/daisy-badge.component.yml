@@ -1,0 +1,147 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Daisy Badge
+description: "Universal DaisyUI badge component supporting colors, modifiers, sizes, icons, links, and slots."
+group: DaisyUI
+status: stable
+props:
+  type: object
+  properties:
+    label:
+      type: string
+      title: Badge Text
+      default: "Badge"
+      examples:
+        - "New"
+        - "Featured"
+    url:
+      type: string
+      title: Link URL
+      description: "Optional URL. If provided, renders an <a> link; otherwise renders a <span>."
+      format: uri-reference
+      examples:
+        - "/categories/news"
+    open_in_new_tab:
+      type: boolean
+      title: Open in new tab
+      default: false
+      examples:
+        - false
+    style:
+      type: string
+      title: Style / Color
+      description: "DaisyUI semantic color token."
+      enum:
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - muted
+        - info
+        - success
+        - warning
+        - error
+        - ghost
+      default: primary
+      meta:enum:
+        primary: Primary
+        secondary: Secondary
+        accent: Accent
+        neutral: Neutral
+        muted: Muted Surface
+        info: Info
+        success: Success
+        warning: Warning
+        error: Error
+        ghost: Ghost
+      examples:
+        - primary
+    variant:
+      type: string
+      title: Variant Style
+      enum:
+        - solid
+        - outline
+        - soft
+        - dash
+      default: solid
+      meta:enum:
+        solid: Solid
+        outline: Outline
+        soft: Soft Tint
+        dash: Dashed
+      examples:
+        - solid
+    size:
+      type: string
+      title: Size
+      enum:
+        - xs
+        - sm
+        - md
+        - lg
+        - xl
+      default: md
+      meta:enum:
+        xs: Extra Small
+        sm: Small
+        md: Medium (Default)
+        lg: Large
+        xl: Extra Large
+      examples:
+        - md
+    text_color:
+      type: string
+      title: Text Color Override
+      enum:
+        - default
+        - black
+        - white
+        - primary
+      default: default
+      meta:enum:
+        default: Default (From Style)
+        black: Black
+        white: White
+        primary: Primary
+      examples:
+        - default
+    icon:
+      type: string
+      title: Icon Name
+      description: "Optional icon identifier from the icon pack (e.g. 'star', 'tag', 'check')."
+      examples:
+        - "star"
+        - "check"
+    icon_position:
+      type: string
+      title: Icon Position
+      enum:
+        - start
+        - end
+      default: start
+      meta:enum:
+        start: "Before text (Left)"
+        end: "After text (Right)"
+      examples:
+        - start
+    icon_pack:
+      type: string
+      title: Icon Pack
+      description: "Icon pack identifier used by Drupal core Icon API."
+      default: phosphor
+      examples:
+        - phosphor
+    aria_label:
+      type: string
+      title: Accessible Name (aria-label)
+      description: "Optional accessible label override for screen readers."
+      examples:
+        - "Status: Active"
+    badge_classes:
+      type: string
+      title: Additional Classes
+      description: "Additional CSS utility classes."
+slots:
+  content:
+    title: Custom Content
+    description: "Optional slot for custom content, micro-indicators, or dynamic values."

@@ -1,0 +1,95 @@
+{#
+/**
+ * @file
+ * daisy-divider.twig
+ *
+ * Universal DaisyUI Divider Component.
+ * Supports DaisyUI 5 colors, vertical/horizontal/responsive orientation,
+ * start/center/end positioning, Drupal core Icon API, and Drupal attributes.
+ * Pure Twig implementation without third-party contrib dependencies.
+ */
+#}
+
+{% set divider_color = color|default('default') %}
+{% set divider_direction = direction|default('vertical') %}
+{% set divider_position = position|default('center') %}
+{% set divider_icon = icon|default('') %}
+{% set divider_icon_pack = icon_pack|default('phosphor') %}
+
+{# Class mapping dictionaries #}
+{% set color_classes = {
+  default: '',
+  neutral: 'divider-neutral',
+  primary: 'divider-primary',
+  secondary: 'divider-secondary',
+  accent: 'divider-accent',
+  info: 'divider-info',
+  success: 'divider-success',
+  warning: 'divider-warning',
+  error: 'divider-error'
+} %}
+
+{% set direction_classes = {
+  vertical: '',
+  horizontal: 'divider-horizontal',
+  'responsive-md': 'md:divider-horizontal',
+  'responsive-lg': 'lg:divider-horizontal'
+} %}
+
+{% set position_classes = {
+  center: '',
+  start: 'divider-start',
+  end: 'divider-end'
+} %}
+
+{# Build class list #}
+{% set classes = [
+  'divider',
+  color_classes[divider_color]|default(''),
+  direction_classes[divider_direction]|default(''),
+  position_classes[divider_position]|default('')
+]|filter(v => v is not empty) %}
+
+{# Normalize divider_classes #}
+{% set extra_classes = divider_classes|default('') %}
+{% if extra_classes is iterable %}
+  {% set extra_classes = extra_classes|join(' ') %}
+{% endif %}
+
+{# Prepare Drupal attributes #}
+{% set divider_attributes = attributes is defined and attributes is not empty ? attributes : create_attribute() %}
+{% set divider_attributes = divider_attributes.addClass(classes) %}
+{% if extra_classes is not empty %}
+  {% set divider_attributes = divider_attributes.addClass(extra_classes|split(' ')) %}
+{% endif %}
+
+{% macro render_icon(icon_pack, icon_name, size_class) %}
+  {% if icon_name is not empty and icon_name != 'none' %}
+    <span class="inline-flex {{ size_class|default('size-[1.2em]') }} shrink-0 items-center justify-center [&>svg]:size-full" aria-hidden="true">
+      {{ icon(icon_pack, icon_name, { color: 'currentColor' }) }}
+    </span>
+  {% endif %}
+{% endmacro %}
+
+{% import _self as macros %}
+
+{% set has_custom_content = content is defined and content is not empty %}
+{% set has_text = text is defined and text is not empty %}
+{% set has_icon = divider_icon is not empty and divider_icon != 'none' %}
+
+<div {{ divider_attributes }}>
+  {% block content %}
+    {% if has_custom_content %}
+      {{ content }}
+    {% elseif has_icon and has_text %}
+      <span class="inline-flex items-center gap-1.5">
+        {{ macros.render_icon(divider_icon_pack, divider_icon) }}
+        <span>{{ text }}</span>
+      </span>
+    {% elseif has_icon %}
+      {{ macros.render_icon(divider_icon_pack, divider_icon) }}
+    {% elseif has_text %}
+      {{ text }}
+    {% endif %}
+  {% endblock %}
+</div>

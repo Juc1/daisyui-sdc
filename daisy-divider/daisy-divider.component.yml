@@ -1,0 +1,95 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Daisy Divider
+description: "Universal DaisyUI visual separator component supporting orientation, color tokens, text, icons, and slots."
+group: DaisyUI
+status: stable
+props:
+  type: object
+  properties:
+    text:
+      type: string
+      title: Divider Text
+      description: "Optional text displayed within the divider line (e.g. 'OR', 'AND')."
+      examples:
+        - "OR"
+    color:
+      type: string
+      title: Color
+      enum:
+        - default
+        - neutral
+        - primary
+        - secondary
+        - accent
+        - info
+        - success
+        - warning
+        - error
+      meta:enum:
+        default: Default (Base content)
+        neutral: Neutral
+        primary: Primary
+        secondary: Secondary
+        accent: Accent
+        info: Info
+        success: Success
+        warning: Warning
+        error: Error
+      default: default
+      examples:
+        - default
+        - primary
+    direction:
+      type: string
+      title: Direction
+      enum:
+        - vertical
+        - horizontal
+        - responsive-md
+        - responsive-lg
+      meta:enum:
+        vertical: "Vertical (Divide stacked elements)"
+        horizontal: "Horizontal (Divide side-by-side elements)"
+        responsive-md: "Responsive (Vertical on mobile, horizontal on md+)"
+        responsive-lg: "Responsive (Vertical on mobile, horizontal on lg+)"
+      default: vertical
+      examples:
+        - vertical
+        - horizontal
+    position:
+      type: string
+      title: Content Placement
+      enum:
+        - center
+        - start
+        - end
+      meta:enum:
+        center: Centered
+        start: Start (Top / Left)
+        end: End (Bottom / Right)
+      default: center
+      examples:
+        - center
+        - start
+        - end
+    icon:
+      type: string
+      title: Icon Name
+      description: "Optional icon identifier from the icon pack (e.g. 'dots-three', 'star')."
+      examples:
+        - "dots-three"
+    icon_pack:
+      type: string
+      title: Icon Pack
+      description: "Icon pack identifier used by Drupal core Icon API."
+      default: phosphor
+      examples:
+        - phosphor
+    divider_classes:
+      type: string
+      title: Additional Classes
+      description: "Additional CSS utility classes for the divider element."
+slots:
+  content:
+    title: Custom Content
+    description: "Optional slot for rich content (badge, custom button, icon) inside the divider."

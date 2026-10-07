@@ -1,0 +1,197 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Daisy Hero
+description: "Universal DaisyUI Hero layout component supporting background overlays, side-by-side media, responsive ratios, and slot-based composition."
+group: DaisyUI
+status: stable
+props:
+  type: object
+  properties:
+    layout:
+      type: string
+      title: Layout Style
+      description: "Content alignment or side-by-side split arrangement."
+      enum:
+        - center
+        - left
+        - side-by-side
+        - side-by-side-reverse
+      meta:enum:
+        center: "Centered Content"
+        left: "Left Aligned Content"
+        side-by-side: "Side by Side (Media Left, Content Right)"
+        side-by-side-reverse: "Side by Side Reverse (Content Left, Media Right)"
+      default: center
+      examples:
+        - center
+    min_height:
+      type: string
+      title: Minimum Height
+      description: "Height preset for the hero container."
+      enum:
+        - screen
+        - large
+        - medium
+        - small
+        - auto
+      meta:enum:
+        screen: "Full Screen (min-h-screen)"
+        large: "Large (min-h-[70vh])"
+        medium: "Medium (min-h-[50vh])"
+        small: "Small (min-h-[35vh])"
+        auto: "Auto / Padded (min-h-fit)"
+      default: medium
+      examples:
+        - medium
+    background_color:
+      type: string
+      title: Background Surface
+      description: "Background surface color token when no background image is set."
+      enum:
+        - base-200
+        - base-100
+        - base-300
+        - neutral
+        - primary
+        - transparent
+      meta:enum:
+        base-200: "Subtle Surface (Base 200)"
+        base-100: "Base Surface (Base 100)"
+        base-300: "Muted Surface (Base 300)"
+        neutral: "Neutral / Dark"
+        primary: "Primary Brand Surface"
+        transparent: "Transparent / Inherit"
+      default: base-200
+      examples:
+        - base-200
+    content_max_width:
+      type: string
+      title: Content Max Width
+      description: "Max width constraint for hero text column."
+      enum:
+        - sm
+        - md
+        - lg
+        - xl
+        - 2xl
+        - full
+      meta:enum:
+        sm: "Small (max-w-md)"
+        md: "Medium (max-w-xl)"
+        lg: "Large (max-w-2xl)"
+        xl: "Extra Large (max-w-4xl)"
+        2xl: "Wide (max-w-6xl)"
+        full: "Full Width"
+      default: lg
+      examples:
+        - lg
+    overlay_opacity:
+      type: string
+      title: Background Overlay Opacity
+      description: "Darkening overlay applied over background images to maintain text contrast."
+      enum:
+        - none
+        - "20"
+        - "40"
+        - "50"
+        - "60"
+        - "80"
+      meta:enum:
+        none: "None (0%)"
+        "20": "Light (20%)"
+        "40": "Subtle (40%)"
+        "50": "Medium (50%)"
+        "60": "Dark (60%)"
+        "80": "Heavy (80%)"
+      default: none
+      examples:
+        - none
+    background_media:
+      $ref: json-schema-definitions://canvas.module/image
+      title: Background Image
+      description: "Full-bleed background image covering the entire hero banner."
+      type: object
+    side_media:
+      $ref: json-schema-definitions://canvas.module/image
+      title: Side Media Image
+      description: "Image displayed alongside content in side-by-side layouts."
+      type: object
+    mobile_order:
+      type: string
+      title: Mobile Stacking Order (< 1024px)
+      description: "Controls whether media or text appears first when stacked vertically on mobile screens."
+      enum:
+        - media-first
+        - content-first
+      meta:enum:
+        media-first: "Media on top, text below"
+        content-first: "Text on top, media below"
+      default: media-first
+      examples:
+        - media-first
+    layout_ratio:
+      type: string
+      title: Column Ratio (Desktop)
+      description: "Width distribution between media and content in side-by-side layouts."
+      enum:
+        - "1:1"
+        - "1:2"
+        - "2:1"
+      meta:enum:
+        "1:1": "Equal width (50% / 50%)"
+        "1:2": "Narrow media / Wide content (33% / 67%)"
+        "2:1": "Wide media / Narrow content (67% / 33%)"
+      default: "1:1"
+      examples:
+        - "1:1"
+    media_aspect_ratio:
+      type: string
+      title: Media Aspect Ratio
+      description: "Aspect ratio / crop applied to the side media image."
+      enum:
+        - auto
+        - "1:1"
+        - "4:3"
+        - "3:2"
+        - "16:9"
+      meta:enum:
+        auto: "Natural (no crop)"
+        "1:1": "Square (1:1)"
+        "4:3": "Standard (4:3)"
+        "3:2": "Classic (3:2)"
+        "16:9": "Widescreen (16:9)"
+      default: auto
+      examples:
+        - auto
+    media_radius:
+      type: string
+      title: Media Border Radius
+      description: "Corner rounding for the side media image."
+      enum:
+        - none
+        - small
+        - medium
+        - large
+        - full
+      meta:enum:
+        none: "Sharp (rounded-none)"
+        small: "Small (rounded-sm)"
+        medium: "Medium (rounded-2xl)"
+        large: "Large (rounded-3xl)"
+        full: "Circle / Pill (rounded-full)"
+      default: medium
+      examples:
+        - medium
+    data_theme:
+      type: string
+      title: Theme Override
+      description: "Optional DaisyUI theme name applied directly to the hero via data-theme."
+      examples:
+        - "dark"
+        - "light"
+slots:
+  content:
+    title: Content
+    description: "Main content area for headings, text, buttons, and composite blocks."
+  media_slot:
+    title: Custom Media Slot
+    description: "Optional slot for custom media, cards, video embeds, or illustrations in side-by-side layouts."
