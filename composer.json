@@ -1,0 +1,20 @@
+{
+  "name": "juc1/daisyui-sdc",
+  "description": "DaisyUI 5 Single Directory Components (SDC) for Drupal 10.3 and Drupal 11.",
+  "type": "drupal-module",
+  "license": "MIT",
+  "homepage": "https://github.com/Juc1/daisyui-sdc",
+  "authors": [
+    {
+      "name": "Juc1",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/Juc1/daisyui-sdc/issues",
+    "source": "https://github.com/Juc1/daisyui-sdc"
+  },
+  "require": {
+    "drupal/core": "^10.3 || ^11"
+  }
+}
