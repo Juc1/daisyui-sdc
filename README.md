@@ -15,6 +15,8 @@ Packaged as a decoupled Drupal module so your components stay independent of you
 | **[`daisy-card`](components/daisy-card/)** | Flexible content & media cards | Vertical / horizontal split, **10px top accent border**, image overlays, accessible stretched link, `header`, `content`, and `actions` slots. |
 | **[`daisy-divider`](components/daisy-divider/)** | Visual separators | Zero contrib dependencies (pure Twig), vertical, horizontal, and responsive orientation, start/center/end alignment, `content` slot. |
 | **[`daisy-hero`](components/daisy-hero/)** | Visual page banner container | Slot-first container (`content` and `media_slot`), desktop column ratios (`1:1`, `1:2`, `2:1`), mobile stacking order, dark opacity overlays, aspect ratios. |
+| **[`theme_controller_circles`](components/theme_controller_circles/)** | Multi-skin color theme switcher | Radio palette swatches with active rings, `localStorage` persistence, multi-widget synchronization, and `[data-theme-reset]` support. |
+| **[`theme_controller_toggle`](components/theme_controller_toggle/)** | 2-Theme binary controller | Pure-CSS `:has()` toggle, checkbox, and animated Sun/Moon icon swap variants without requiring JS. |
 
 ---
 

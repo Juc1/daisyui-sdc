@@ -1,0 +1,69 @@
+This file shows examples of how to render each 2-theme variant of the Theme Controller Toggle component using the include() Twig function for SDC.
+
+---
+
+// 1. Basic Toggle Variant (Default)
+{{ include('daisyui_sdc:theme_controller_toggle', {
+  variant: 'toggle',
+  theme_value: 'dark',
+}, with_context = false) }}
+
+---
+
+// 2. Checkbox Variant
+{{ include('daisyui_sdc:theme_controller_toggle', {
+  variant: 'checkbox',
+  theme_value: 'synthwave',
+}, with_context = false) }}
+
+---
+
+// 3. Swap Variant (Sun/Moon rotate animation)
+{{ include('daisyui_sdc:theme_controller_toggle', {
+  variant: 'swap',
+  theme_value: 'dark',
+}, with_context = false) }}
+
+---
+
+// 4. Toggle with Text Variant
+{{ include('daisyui_sdc:theme_controller_toggle', {
+  variant: 'toggle-text',
+  theme_value: 'coffee',
+  label_off: 'Light',
+  label_on: 'Coffee',
+}, with_context = false) }}
+
+---
+
+// 5. Toggle with Icons Variant (Sun & Moon on sides)
+{{ include('daisyui_sdc:theme_controller_toggle', {
+  variant: 'toggle-icons',
+  theme_value: 'dark',
+}, with_context = false) }}
+
+---
+
+// 6. Toggle with Icons Inside Variant (DaisyUI v5 track icons)
+{{ include('daisyui_sdc:theme_controller_toggle', {
+  variant: 'toggle-icons-inside',
+  theme_value: 'synthwave',
+}, with_context = false) }}
+
+---
+
+// 7. Toggle with Custom Colors Variant
+{{ include('daisyui_sdc:theme_controller_toggle', {
+  variant: 'toggle-custom-colors',
+  theme_value: 'dark',
+}, with_context = false) }}
+
+---
+
+// Size & Checked options (available across toggle variants):
+{{ include('daisyui_sdc:theme_controller_toggle', {
+  variant: 'toggle',
+  theme_value: 'lemonade',
+  size: 'lg',
+  checked: true,
+}, with_context = false) }}

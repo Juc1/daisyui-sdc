@@ -1,0 +1,8 @@
+name: Theme Controller Circles
+description: Five colored circles for controlling theme/animation states.
+props:
+  type: object
+  properties: {}
+libraryOverrides:
+  dependencies:
+    - core/drupal

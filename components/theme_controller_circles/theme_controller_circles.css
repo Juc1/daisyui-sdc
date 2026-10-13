@@ -1,0 +1,14 @@
+/**
+ * Transition for theme changes.
+ * This ensures that when the data-theme attribute on <html> changes,
+ * the colors transition smoothly.
+ */
+:root {
+  transition: background-color 3s ease, color 3s ease, border-color 3s ease;
+}
+
+:root *,
+:root *::before,
+:root *::after {
+  transition: background-color 3s ease, color 3s ease, border-color 3s ease, fill 3s ease, stroke 3s ease;
+}

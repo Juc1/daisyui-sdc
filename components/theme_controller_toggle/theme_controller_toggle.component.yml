@@ -1,0 +1,53 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Theme Controller Toggle
+description: "A binary (2-theme) theme switcher using DaisyUI toggles, checkboxes, and icon swaps."
+group: Actions
+links:
+  - "https://daisyui.com/components/theme-controller/"
+variants:
+  toggle:
+    title: Toggle
+  checkbox:
+    title: Checkbox
+  swap:
+    title: Swap
+  toggle-text:
+    title: Toggle with Text
+  toggle-icons:
+    title: Toggle with Icons
+  toggle-icons-inside:
+    title: Toggle with Icons Inside
+  toggle-custom-colors:
+    title: Toggle with Custom Colors
+props:
+  type: object
+  properties:
+    theme_value:
+      type: string
+      title: 'Theme Value'
+      description: 'The theme name applied when the toggle is checked (e.g., "dark", "synthwave", "lemonade", "coffee").'
+      default: 'dark'
+    checked:
+      type: boolean
+      title: 'Checked'
+      description: 'Whether the toggle is initially checked.'
+      default: false
+    label_off:
+      type: string
+      title: 'Default / Off Label'
+      description: 'The label displayed when unchecked (used in toggle-text variant).'
+      default: 'Default'
+    label_on:
+      type: string
+      title: 'Checked / On Label'
+      description: 'The label displayed when checked (used in toggle-text variant). Defaults to theme_value.'
+    size:
+      type: string
+      title: 'Size'
+      description: 'Size of the toggle or checkbox (xs, sm, md, lg).'
+      enum:
+        - xs
+        - sm
+        - md
+        - lg
+      default: 'md'
