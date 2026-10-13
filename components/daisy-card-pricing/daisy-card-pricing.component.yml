@@ -1,0 +1,108 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Daisy Pricing Card
+description: "Semantic DaisyUI pricing plan card component with theming and action slot."
+group: DaisyUI
+status: stable
+props:
+  type: object
+  properties:
+    heading_text:
+      type: string
+      title: Heading
+      examples:
+        - "Single Session"
+    description:
+      type: string
+      title: Description
+      description: "Main description text."
+      contentMediaType: text/html
+      x-formatting-context: block
+      examples:
+        - "<p>A good starting point if you'd like to experience coaching before committing to a longer journey.</p>"
+    price:
+      type: string
+      title: Price
+      description: "Price string, e.g. £80 or $150"
+      examples:
+        - "£80"
+    promote:
+      type: boolean
+      title: Highlight Card
+      description: "Visually emphasize this pricing tier with a highlight border and badge."
+      default: false
+      examples:
+        - false
+        - true
+    badge_text:
+      type: string
+      title: Highlight Badge Text
+      description: "Badge text displayed when Highlight Card is enabled."
+      default: "Recommended"
+      examples:
+        - "Recommended"
+        - "Most Popular"
+    theme:
+      type: string
+      title: Color Theme
+      description: "Inherits the active page/section theme, or sets a specific brand theme."
+      enum:
+        - default
+        - blue
+        - pink
+        - purple
+      meta:enum:
+        default: "Inherit"
+        blue: "Radley Blue"
+        pink: "Pink"
+        purple: "Radley Purple"
+      default: default
+      examples:
+        - default
+    variant:
+      type: string
+      title: Card Surface
+      description: "Surface background style."
+      enum:
+        - default
+        - subtle
+        - primary
+        - neutral
+      meta:enum:
+        default: "Base Surface (Default)"
+        subtle: "Subtle Surface (Base 200)"
+        primary: "Primary Accent Surface"
+        neutral: "Neutral / Dark Surface"
+      default: default
+      examples:
+        - default
+    style_modifier:
+      type: string
+      title: Border & Shadow Style
+      enum:
+        - default
+        - bordered
+        - dash
+      meta:enum:
+        default: "Elevated Shadow (Default)"
+        bordered: "Solid Border"
+        dash: "Dashed Border"
+      default: default
+      examples:
+        - default
+    header_align:
+      type: string
+      title: Alignment
+      enum:
+        - left
+        - center
+      meta:enum:
+        left: "Left Aligned"
+        center: "Centered"
+      default: left
+      examples:
+        - left
+
+slots:
+  footer:
+    title: Actions / Button
+    description: "Slot for action buttons (e.g. Daisy Button) or links."

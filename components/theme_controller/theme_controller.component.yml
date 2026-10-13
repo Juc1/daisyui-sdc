@@ -1,0 +1,59 @@
+name: Theme Controller
+description: "A theme switcher with multiple UX styles."
+group: Actions
+links:
+  - "https://daisyui.com/components/theme-controller/"
+variants:
+  toggle:
+    title: Toggle
+  checkbox:
+    title: Checkbox
+  swap:
+    title: Swap
+  toggle-text:
+    title: Toggle with Text
+  toggle-icons:
+    title: Toggle with Icons
+  toggle-icons-inside:
+    title: Toggle with Icons Inside
+  toggle-custom-colors:
+    title: Toggle with Custom Colors
+  radio-input:
+    title: Radio Input
+  radio-button:
+    title: Radio Button
+  dropdown:
+    title: Dropdown
+props:
+  type: object
+  properties:
+    theme_value:
+      type: string
+      title: 'Toggle Theme Value'
+      description: 'The theme name to apply when the toggle is checked.'
+      default: 'synthwave'
+    name:
+      type: string
+      title: 'Radio Group Name'
+      description: 'The HTML name attribute for the radio button group.'
+      default: 'theme-radios'
+    dropdown_label:
+      type: string
+      title: 'Dropdown Label'
+      description: 'The label for the dropdown button.'
+      default: 'Theme'
+    themes:
+      type: array
+      title: 'Themes'
+      description: 'An array of theme options for list-based variants.'
+      items:
+        type: object
+        properties:
+          value:
+            type: string
+            title: 'Theme Value'
+            description: 'The machine name of the theme (e.g., "cyberpunk").'
+          label:
+            type: string
+            title: 'Theme Label'
+            description: 'The human-readable label for the theme (e.g., "Cyberpunk").'

@@ -1,0 +1,109 @@
+{#
+/**
+ * @file
+ * daisy-card-pricing.twig
+ *
+ * Semantic DaisyUI Pricing Card Component.
+ * Supports DaisyUI theming (data-theme), promotions, badges, and slotted action buttons.
+ */
+#}
+
+{% set card_theme = theme|default('default') %}
+{% set card_variant = variant|default('default') %}
+{% set card_style = style_modifier|default('default') %}
+{% set card_align = header_align|default('left') %}
+{% set is_promoted = promote|default(false) %}
+
+{% set bg_classes = {
+  default: 'bg-card text-card-foreground hover:bg-primary hover:text-white hover:border-primary',
+  subtle: 'bg-base-200 text-base-content hover:bg-primary hover:text-white hover:border-primary',
+  primary: 'bg-primary text-white hover:bg-primary/85',
+  neutral: 'bg-neutral text-neutral-content hover:bg-neutral/90'
+} %}
+
+{% set style_classes = {
+  default: 'shadow-lg border border-border/60 hover:shadow-xl',
+  bordered: 'card-bordered border-2 border-border hover:border-primary',
+  dash: 'card-dash border-2 border-dashed border-border hover:border-primary'
+} %}
+
+{% set align_classes = {
+  left: 'text-left items-start',
+  center: 'text-center items-center'
+} %}
+
+{% set card_classes = [
+  'card',
+  'group',
+  'relative',
+  'flex',
+  'flex-col',
+  'transition-all',
+  'duration-300',
+  'h-full',
+  bg_classes[card_variant]|default('bg-card text-card-foreground hover:bg-primary hover:text-white hover:border-primary'),
+  style_classes[card_style]|default('shadow-lg border border-border/60 hover:shadow-xl'),
+  is_promoted ? 'ring-2 ring-primary border-primary shadow-xl scale-[1.02] z-10' : ''
+]|filter(v => v is not empty)|join(' ') %}
+
+<article class="{{ card_classes }}"{% if card_theme and card_theme != 'default' %} data-theme="{{ card_theme }}"{% endif %}>
+  {% if is_promoted and badge_text is not empty %}
+    <div class="absolute -top-3 right-6 z-20">
+      <span class="badge badge-primary font-semibold shadow-sm px-3 py-2 text-xs uppercase tracking-wider">
+        {{ badge_text }}
+      </span>
+    </div>
+  {% endif %}
+
+  <div class="card-body p-6 md:p-8 flex flex-col flex-grow">
+    <header class="flex flex-col gap-3 {{ align_classes[card_align]|default('text-left') }}">
+      {% if heading_text is not empty %}
+        {{
+          include(
+            'irulan:heading',
+            {
+              heading_text: heading_text,
+              level: 3,
+              url: 'No URL',
+              text_color: 'default',
+              text_size: 'heading-responsive-4xl',
+              align: 'center',
+              heading_classes: ['text-[1.375rem]', 'leading-tight', 'font-bold', 'text-inherit', 'text-center', 'w-full', 'transition-colors', 'duration-300', 'group-hover:text-white']
+            },
+            with_context: false
+          )
+        }}
+      {% endif %}
+
+      {% if description is not empty %}
+        <div class="text-base leading-relaxed opacity-90 text-inherit transition-colors duration-300 group-hover:text-white hover:text-white [&_*]:group-hover:text-white [&_*]:hover:text-white">
+          {{
+            include(
+              'irulan:text',
+              {
+                text: description,
+                text_color: 'default',
+                text_size: 'normal'
+              },
+              with_context: false
+            )
+          }}
+        </div>
+      {% endif %}
+    </header>
+
+    <div class="mt-auto pt-6 flex flex-col gap-4">
+      {% if price is not empty %}
+        <div class="border-t border-border/60 group-hover:border-white/40 pt-4 transition-colors duration-300 text-center">
+          <div class="flex items-baseline justify-center gap-2 text-center">
+            <h4 class="text-3xl lg:text-4xl 2xl:text-[2.25rem] font-bold tracking-tight leading-none text-inherit text-center transition-colors duration-300 group-hover:text-white [&_sup]:!text-[60%]">
+              {{ price }}
+            </h4>
+          </div>
+        </div>
+      {% endif %}
+
+      <footer class="card-actions w-full {{ card_align == 'center' ? 'justify-center' : 'justify-start' }} empty:hidden">{% block footer %}{% endblock %}</footer>
+    </div>
+  </div>
+</article>

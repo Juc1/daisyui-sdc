@@ -1,0 +1,103 @@
+This file shows examples of how to render each variant of the Theme Controller component using the include() Twig function for SDC.
+
+---
+
+// Toggle Variant
+{{ include('irulan:theme_controller', {
+  variant: 'toggle',
+  theme_value: 'dark',
+}, with_context = false) }}
+
+---
+
+// Checkbox Variant
+{{ include('irulan:theme_controller', {
+  variant: 'checkbox',
+  theme_value: 'synthwave',
+}, with_context = false) }}
+
+---
+
+// Swap Variant
+{{ include('irulan:theme_controller', {
+  variant: 'swap',
+  theme_value: 'synthwave',
+}, with_context = false) }}
+
+---
+
+// Toggle with Text Variant
+// Note: "Default" is hardcoded for the first label.
+{{ include('irulan:theme_controller', {
+  variant: 'toggle-text',
+  theme_value: 'synthwave',
+}, with_context = false) }}
+
+---
+
+// Toggle with Icons Variant
+{{ include('irulan:theme_controller', {
+  variant: 'toggle-icons',
+  theme_value: 'dark',
+}, with_context = false) }}
+
+---
+
+// Toggle with Icons Inside Variant
+{{ include('irulan:theme_controller', {
+  variant: 'toggle-icons-inside',
+  theme_value: 'synthwave',
+}, with_context = false) }}
+
+---
+
+// Toggle with Custom Colors Variant
+// Note: Colors are hardcoded in the component for this variant.
+{{ include('irulan:theme_controller', {
+  variant: 'toggle-custom-colors',
+  theme_value: 'dark',
+}, with_context = false) }}
+
+---
+
+// Radio Input Variant
+{{ include('irulan:theme_controller', {
+  variant: 'radio-input',
+  name: 'theme-radio-1',
+  themes: [
+    { value: 'default', label: 'Default' },
+    { value: 'retro', label: 'Retro' },
+    { value: 'cyberpunk', label: 'Cyberpunk' },
+  ],
+}, with_context = false) }}
+
+---
+
+// Radio Button Variant
+{{ include('irulan:theme_controller', {
+  variant: 'radio-button',
+  name: 'theme-radio-2',
+  themes: [
+    { value: 'default', label: 'Default' },
+    { value: 'retro', label: 'Retro' },
+    { value: 'cyberpunk', label: 'Cyberpunk' },
+    { value: 'valentine', label: 'Valentine' },
+    { value: 'aqua', label: 'Aqua' },
+  ],
+}, with_context = false) }}
+
+---
+
+// Dropdown Variant
+{{ include('irulan:theme_controller', {
+  variant: 'dropdown',
+  name: 'theme-dropdown-1',
+  dropdown_label: 'Select Theme',
+  themes: [
+    { value: 'default', label: 'Default' },
+    { value: 'retro', label: 'Retro' },
+    { value: 'cyberpunk', label: 'Cyberpunk' },
+    { value: 'valentine', label: 'Valentine' },
+    { value: 'aqua', label: 'Aqua' },
+  ],
+}, with_context = false) }}
