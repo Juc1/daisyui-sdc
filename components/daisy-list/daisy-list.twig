@@ -1,0 +1,155 @@
+{#
+/**
+ * @file
+ * daisy-list.twig
+ *
+ * Universal DaisyUI 5 List Component (.list + .list-row).
+ * Converts standard CKEditor <ul><li> items into semantic DaisyUI .list-row
+ * grid rows with inline Drupal Icon API SVGs.
+ */
+#}
+
+{% set list_style = style|default('clean') %}
+{% set list_spacing = spacing|default('normal') %}
+{% set list_text_size = text_size|default('lg') %}
+{% set raw_icon = (icon|default('check'))|trim %}
+{% set icon_aliases = {
+  checkmark: 'check',
+  tick: 'check',
+  'chevron-right': 'caret-right',
+  bullet: 'circle'
+} %}
+{% set list_icon = icon_aliases[raw_icon]|default(raw_icon) %}
+{% set list_icon_pack = icon_pack|default('phosphor') %}
+{% set list_icon_color = icon_color|default('primary') %}
+{% set list_icon_size = icon_size|default('sm') %}
+{% set has_icon = list_icon is not empty and list_icon != 'none' %}
+
+{# Class mapping dictionaries #}
+{% set style_wrapper_classes = {
+  clean: 'bg-transparent',
+  divided: 'bg-transparent',
+  boxed: 'bg-base-100 rounded-box shadow-sm border border-base-300'
+} %}
+
+{% set text_size_classes = {
+  sm: 'text-sm!',
+  md: 'text-base!',
+  lg: 'text-base! md:text-lg! xl:text-xl!',
+  xl: 'text-lg! md:text-xl! xl:text-2xl!'
+} %}
+
+{% set icon_color_classes = {
+  default: 'text-current',
+  primary: 'text-primary',
+  secondary: 'text-secondary',
+  accent: 'text-accent',
+  neutral: 'text-neutral',
+  info: 'text-info',
+  success: 'text-success',
+  warning: 'text-warning',
+  error: 'text-error'
+} %}
+
+{% set icon_size_classes = {
+  xs: 'size-4 mt-[0.35em]',
+  sm: 'size-5 mt-[0.3em]',
+  md: 'size-6 mt-[0.25em]',
+  lg: 'size-7 mt-[0.2em]',
+  xl: 'size-8 mt-[0.15em]'
+} %}
+
+{% set icon_px_map = {
+  xs: 16,
+  sm: 20,
+  md: 24,
+  lg: 28,
+  xl: 32
+} %}
+{% set resolved_icon_px = icon_px_map[list_icon_size]|default(20) %}
+
+{% set clean_spacing_classes = {
+  tight: 'px-0! py-1! gap-2.5!',
+  normal: 'px-0! py-1.5! gap-3!',
+  relaxed: 'px-0! py-2.5! gap-3.5!'
+} %}
+
+{% set divided_spacing_classes = {
+  tight: 'py-2! gap-3!',
+  normal: 'py-3! gap-3.5!',
+  relaxed: 'py-4! gap-4!'
+} %}
+
+{% set row_classes = [
+  'list-row',
+  'items-start',
+  list_style == 'clean' ? 'after:hidden! rounded-none! ' ~ (clean_spacing_classes[list_spacing]|default(clean_spacing_classes.normal)) : '',
+  list_style == 'divided' ? 'px-0! rounded-none! ' ~ (divided_spacing_classes[list_spacing]|default(divided_spacing_classes.normal)) : '',
+  list_style == 'boxed' ? (divided_spacing_classes[list_spacing]|default(divided_spacing_classes.normal)) : ''
+]|filter(v => v is not empty)|join(' ') %}
+
+{% set icon_wrapper_classes = [
+  'inline-flex shrink-0 items-center justify-center [&>svg]:size-full',
+  icon_color_classes[list_icon_color]|default('text-primary'),
+  icon_size_classes[list_icon_size]|default(icon_size_classes.sm)
+]|filter(v => v is not empty)|join(' ') %}
+
+{# Build wrapper class list #}
+{% set classes = [
+  'list',
+  'list-none',
+  'ps-0',
+  'text-base-content',
+  style_wrapper_classes[list_style]|default('bg-transparent'),
+  text_size_classes[list_text_size]|default(text_size_classes.lg)
+]|filter(v => v is not empty) %}
+
+{# Normalize list_classes #}
+{% set extra_classes = list_classes|default('') %}
+{% if extra_classes is iterable %}
+  {% set extra_classes = extra_classes|join(' ') %}
+{% endif %}
+
+{# Prepare Drupal attributes #}
+{% set list_attributes = attributes is defined and attributes is not empty ? attributes : create_attribute() %}
+{% set list_attributes = list_attributes.addClass(classes) %}
+{% if extra_classes is not empty %}
+  {% set list_attributes = list_attributes.addClass(extra_classes|split(' ')) %}
+{% endif %}
+
+{% set text_str = (text|default('')) ~ '' %}
+
+<ul {{ list_attributes }}>
+  {% if text_str|trim is not empty %}
+    {% set raw_parts = text_str|split('<li') %}
+    {% if raw_parts|length > 1 %}
+      {% for part in raw_parts|slice(1) %}
+        {% set after_open = part|split('>')|slice(1)|join('>') %}
+        {% set item_html = after_open|split('</li>')|first|trim %}
+        {% if item_html is not empty %}
+          <li class="{{ row_classes }}">
+            {% if has_icon %}
+              <span class="{{ icon_wrapper_classes }}" aria-hidden="true">
+                {{ icon(list_icon_pack, list_icon, { size: resolved_icon_px, color: 'currentColor' }) }}
+              </span>
+            {% endif %}
+            <div class="list-col-grow leading-relaxed [&_p]:mb-1 [&_p:last-child]:mb-0">
+              {{ item_html|raw }}
+            </div>
+          </li>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <li class="{{ row_classes }}">
+        {% if has_icon %}
+          <span class="{{ icon_wrapper_classes }}" aria-hidden="true">
+            {{ icon(list_icon_pack, list_icon, { size: resolved_icon_px, color: 'currentColor' }) }}
+          </span>
+        {% endif %}
+        <div class="list-col-grow leading-relaxed [&_p]:mb-1 [&_p:last-child]:mb-0">
+          {{ text|raw }}
+        </div>
+      </li>
+    {% endif %}
+  {% endif %}
+</ul>

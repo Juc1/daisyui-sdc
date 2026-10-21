@@ -1,0 +1,198 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Daisy Testimonial Card
+description: "DaisyUI Testimonial Card component using card, card-body, and avatar with full-height grid matching and vertical alignment options."
+group: DaisyUI
+status: stable
+props:
+  type: object
+  properties:
+    rich_text:
+      type: string
+      title: Quote
+      description: "Formatted testimonial quote (CKEditor rich text)."
+      contentMediaType: text/html
+      x-formatting-context: block
+      default: "<p>My career’s guidance was crucial in helping me understand the tech industry landscape and ultimately secure my role.</p>"
+      examples:
+        - "<p>My career’s guidance was crucial in helping me understand the tech industry landscape and ultimately secure my role.</p>"
+    cite_name:
+      type: string
+      title: Citation Name
+      description: "Name of the person giving the testimonial."
+      default: "Isiah Julio"
+      examples:
+        - "Isiah Julio"
+    cite_text:
+      type: string
+      title: Citation Role / Title
+      description: "Role, company, or context for the citation."
+      default: "Engineer, Technical Services"
+      examples:
+        - "Engineer, Technical Services"
+    cite_url:
+      type: string
+      title: Citation Link URL
+      description: "Optional URL for the citation text."
+    media:
+      $ref: json-schema-definitions://canvas.module/image
+      title: Author Portrait (Avatar)
+      description: "Optional circular portrait rendered using DaisyUI avatar."
+      type: object
+    align:
+      type: string
+      title: Horizontal Alignment
+      enum:
+        - center
+        - left
+      default: center
+      meta:enum:
+        center: "Center"
+        left: "Left"
+      examples:
+        - center
+    vertical_align:
+      type: string
+      title: Vertical Alignment
+      description: "Controls how the quote and citation are positioned vertically when the card stretches to match a taller column (such as an image)."
+      enum:
+        - center
+        - center-quote
+        - spread
+      default: center
+      meta:enum:
+        center: "Center All (Quote & citation centered together)"
+        center-quote: "Center Quote (Quote centered, citation at bottom)"
+        spread: "Spread (Quote at top, citation at bottom)"
+      examples:
+        - center
+    height:
+      type: string
+      title: Card Height
+      description: "Full height stretches the card to match adjacent columns (e.g. a 50/50 section with an image)."
+      enum:
+        - full
+        - auto
+      default: full
+      meta:enum:
+        full: "Full (Match grid row / image height)"
+        auto: "Auto (Fit content)"
+      examples:
+        - full
+    quote_size:
+      type: string
+      title: Quote Text Size
+      enum:
+        - base
+        - lg
+        - xl
+        - 2xl
+      default: xl
+      meta:enum:
+        base: "Base (1rem)"
+        lg: "Large (1.125rem)"
+        xl: "Extra Large (1.25rem)"
+        2xl: "2X Large (1.5rem)"
+      examples:
+        - xl
+    show_quote_marks:
+      type: boolean
+      title: Show Decorative Quote Marks
+      description: "Displays subtle watermark quotation marks in the top-left and bottom-right corners."
+      default: true
+      examples:
+        - true
+    background:
+      type: string
+      title: Background Surface
+      enum:
+        - white
+        - default
+        - base-200
+        - base-300
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - transparent
+      default: base-200
+      meta:enum:
+        white: "White"
+        default: "Base 100"
+        base-200: "Base 200 (Subtle Surface)"
+        base-300: "Base 300 (Muted Surface)"
+        primary: "Primary"
+        secondary: "Secondary"
+        accent: "Accent"
+        neutral: "Neutral (Inverted / Dark)"
+        transparent: "Transparent"
+      examples:
+        - base-200
+    style:
+      type: string
+      title: Border / Frame Style
+      enum:
+        - default
+        - border
+        - dash
+      default: default
+      meta:enum:
+        default: "None (Clean)"
+        border: "Solid Border (card-border)"
+        dash: "Dashed Border (card-dash)"
+      examples:
+        - default
+    size:
+      type: string
+      title: Card Padding Size
+      enum:
+        - sm
+        - md
+        - lg
+        - xl
+      default: lg
+      meta:enum:
+        sm: "Small (card-sm)"
+        md: "Medium (Default)"
+        lg: "Large (card-lg)"
+        xl: "Extra Large (card-xl)"
+      examples:
+        - lg
+    shadow:
+      type: string
+      title: Shadow Elevation
+      enum:
+        - none
+        - sm
+        - md
+        - lg
+        - xl
+        - 2xl
+      default: none
+      meta:enum:
+        none: "None"
+        sm: "Small"
+        md: "Medium"
+        lg: "Large"
+        xl: "Extra Large"
+        2xl: "2X Large"
+      examples:
+        - none
+    data_theme:
+      type: string
+      title: Theme Override
+      description: "Optional DaisyUI theme name applied via data-theme."
+    margin_block_end:
+      type: string
+      title: Margin Bottom
+      enum:
+        - "0"
+        - "8"
+        - "20"
+        - "32"
+        - "48"
+        - "64"
+        - "96"
+        - "128"
+      default: "0"
+      examples:
+        - "0"

@@ -58,36 +58,14 @@
   <div class="card-body p-6 md:p-8 flex flex-col flex-grow">
     <header class="flex flex-col gap-3 {{ align_classes[card_align]|default('text-left') }}">
       {% if heading_text is not empty %}
-        {{
-          include(
-            'irulan:heading',
-            {
-              heading_text: heading_text,
-              level: 3,
-              url: 'No URL',
-              text_color: 'default',
-              text_size: 'heading-responsive-4xl',
-              align: 'center',
-              heading_classes: ['text-[1.375rem]', 'leading-tight', 'font-bold', 'text-inherit', 'text-center', 'w-full', 'transition-colors', 'duration-300', 'group-hover:text-white']
-            },
-            with_context: false
-          )
-        }}
+        <h3 class="text-[1.375rem] leading-tight font-bold text-inherit text-center w-full transition-colors duration-300 group-hover:text-white">
+          {{ heading_text }}
+        </h3>
       {% endif %}
 
       {% if description is not empty %}
         <div class="text-base leading-relaxed opacity-90 text-inherit transition-colors duration-300 group-hover:text-white hover:text-white [&_*]:group-hover:text-white [&_*]:hover:text-white">
-          {{
-            include(
-              'irulan:text',
-              {
-                text: description,
-                text_color: 'default',
-                text_size: 'normal'
-              },
-              with_context: false
-            )
-          }}
+          {{ description }}
         </div>
       {% endif %}
     </header>

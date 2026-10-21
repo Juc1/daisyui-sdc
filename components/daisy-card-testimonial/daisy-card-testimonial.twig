@@ -1,0 +1,212 @@
+{#
+/**
+ * @file
+ * daisy-card-testimonial.twig
+ *
+ * DaisyUI Testimonial Card Component.
+ * Uses DaisyUI card, card-body, and avatar classes with full-height grid
+ * matching and vertical alignment options (center, center-quote, spread).
+ */
+#}
+
+{% set card_align = align|default('center') %}
+{% set card_vertical_align = vertical_align|default('center') %}
+{% set card_height = height|default('full') %}
+{% set card_quote_size = quote_size|default('xl') %}
+{% set card_background = background|default('base-200') %}
+{% set card_style = style|default('default') %}
+{% set card_size = size|default('lg') %}
+{% set card_shadow = shadow|default('none') %}
+{% set card_margin = margin_block_end|default('0') %}
+{% set display_quote_marks = show_quote_marks ?? true %}
+{% set has_media = media is defined and media is not empty and media.src is not empty %}
+
+{# Surface color classes #}
+{% set background_classes = {
+  white: 'bg-white text-black',
+  default: 'bg-base-100 text-base-content',
+  'base-200': 'bg-base-200 text-base-content',
+  'base-300': 'bg-base-300 text-base-content',
+  primary: 'bg-primary text-primary-content',
+  secondary: 'bg-secondary text-secondary-content',
+  accent: 'bg-accent text-accent-content',
+  neutral: 'bg-neutral text-neutral-content',
+  transparent: 'bg-transparent text-base-content'
+} %}
+
+{# Border style classes #}
+{% set style_classes = {
+  default: '',
+  border: 'card-border',
+  dash: 'card-dash'
+} %}
+
+{# Padding size classes #}
+{% set size_classes = {
+  sm: 'card-sm',
+  md: '',
+  lg: 'card-lg',
+  xl: 'card-xl'
+} %}
+
+{# Shadow classes #}
+{% set shadow_classes = {
+  none: 'shadow-none',
+  sm: 'shadow-sm',
+  md: 'shadow-md',
+  lg: 'shadow-lg',
+  xl: 'shadow-xl',
+  '2xl': 'shadow-2xl'
+} %}
+
+{# Height classes #}
+{% set height_classes = {
+  full: 'h-full',
+  auto: 'self-start h-auto'
+} %}
+
+{# Quote text size classes #}
+{% set quote_size_classes = {
+  base: 'text-base',
+  lg: 'text-lg',
+  xl: 'text-xl',
+  '2xl': 'text-2xl'
+} %}
+
+{# Margin bottom classes #}
+{% set margin_classes = {
+  '0': 'mb-0',
+  '8': 'mb-2',
+  '20': 'mb-5',
+  '32': 'mb-6 md:mb-7 xl:mb-8',
+  '48': 'mb-8 md:mb-10 xl:mb-12',
+  '64': 'mb-10 md:mb-13 xl:mb-16',
+  '96': 'mb-16 md:mb-20 xl:mb-24',
+  '128': 'mb-20 md:mb-24 xl:mb-32'
+} %}
+
+{# Outer .card classes #}
+{% set classes = [
+  'card',
+  'relative w-full',
+  height_classes[card_height]|default('h-full'),
+  background_classes[card_background]|default(background_classes['base-200']),
+  style_classes[card_style]|default(''),
+  size_classes[card_size]|default('card-lg'),
+  shadow_classes[card_shadow]|default('shadow-none'),
+  margin_classes[card_margin]|default('mb-0')
+]|filter(v => v is not empty) %}
+
+{# Vertical alignment logic for blockquote & quote wrapper #}
+{% set blockquote_vertical_classes = {
+  center: 'justify-center',
+  'center-quote': 'justify-between',
+  spread: 'justify-between'
+} %}
+
+{% set quote_vertical_classes = {
+  center: '',
+  'center-quote': 'my-auto',
+  spread: 'grow'
+} %}
+
+{% set blockquote_classes = [
+  'relative z-10 flex flex-1 flex-col gap-6',
+  display_quote_marks ? 'px-2 py-8' : '',
+  card_align == 'center' ? 'items-center text-center' : 'items-start text-left',
+  blockquote_vertical_classes[card_vertical_align]|default('justify-center')
+]|filter(v => v is not empty)|join(' ') %}
+
+{% set quote_classes = [
+  quote_vertical_classes[card_vertical_align]|default(''),
+  quote_size_classes[card_quote_size]|default('text-xl'),
+  'text-inherit italic [&_p]:mb-3 [&_p:last-child]:mb-0'
+]|filter(v => v is not empty)|join(' ') %}
+
+{% set footer_classes = [
+  'flex flex-row items-center gap-4 text-center text-base font-bold',
+  card_align == 'center' ? 'justify-center' : 'justify-start'
+]|join(' ') %}
+
+{# Prepare Drupal attributes #}
+{% set card_attributes = attributes is defined and attributes is not empty ? attributes : create_attribute() %}
+{% set card_attributes = card_attributes.addClass(classes) %}
+{% if data_theme is defined and data_theme is not empty %}
+  {% set card_attributes = card_attributes.setAttribute('data-theme', data_theme) %}
+{% endif %}
+
+<div {{ card_attributes }}>
+  {% if display_quote_marks %}
+    <svg
+      class="pointer-events-none absolute start-4 top-4 size-16 text-current opacity-10"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M7.39762 10.3C7.39762 11.0733 7.14888 11.7 6.6514 12.18C6.15392 12.6333 5.52552 12.86 4.76621 12.86C3.84979 12.86 3.09047 12.5533 2.48825 11.94C1.91222 11.3266 1.62421 10.4467 1.62421 9.29999C1.62421 8.07332 1.96459 6.87332 2.64535 5.69999C3.35231 4.49999 4.33418 3.55332 5.59098 2.85999L6.4943 4.25999C5.81354 4.73999 5.26369 5.27332 4.84476 5.85999C4.45201 6.44666 4.19017 7.12666 4.05926 7.89999C4.29491 7.79332 4.56983 7.73999 4.88403 7.73999C5.61716 7.73999 6.21938 7.97999 6.69067 8.45999C7.16197 8.93999 7.39762 9.55333 7.39762 10.3ZM14.6242 10.3C14.6242 11.0733 14.3755 11.7 13.878 12.18C13.3805 12.6333 12.7521 12.86 11.9928 12.86C11.0764 12.86 10.3171 12.5533 9.71484 11.94C9.13881 11.3266 8.85079 10.4467 8.85079 9.29999C8.85079 8.07332 9.19117 6.87332 9.87194 5.69999C10.5789 4.49999 11.5608 3.55332 12.8176 2.85999L13.7209 4.25999C13.0401 4.73999 12.4903 5.27332 12.0713 5.85999C11.6786 6.44666 11.4168 7.12666 11.2858 7.89999C11.5215 7.79332 11.7964 7.73999 12.1106 7.73999C12.8437 7.73999 13.446 7.97999 13.9173 8.45999C14.3886 8.93999 14.6242 9.55333 14.6242 10.3Z"
+        fill="currentColor"
+      ></path>
+    </svg>
+    <svg
+      class="pointer-events-none absolute end-4 bottom-4 size-16 rotate-180 text-current opacity-10"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M7.39762 10.3C7.39762 11.0733 7.14888 11.7 6.6514 12.18C6.15392 12.6333 5.52552 12.86 4.76621 12.86C3.84979 12.86 3.09047 12.5533 2.48825 11.94C1.91222 11.3266 1.62421 10.4467 1.62421 9.29999C1.62421 8.07332 1.96459 6.87332 2.64535 5.69999C3.35231 4.49999 4.33418 3.55332 5.59098 2.85999L6.4943 4.25999C5.81354 4.73999 5.26369 5.27332 4.84476 5.85999C4.45201 6.44666 4.19017 7.12666 4.05926 7.89999C4.29491 7.79332 4.56983 7.73999 4.88403 7.73999C5.61716 7.73999 6.21938 7.97999 6.69067 8.45999C7.16197 8.93999 7.39762 9.55333 7.39762 10.3ZM14.6242 10.3C14.6242 11.0733 14.3755 11.7 13.878 12.18C13.3805 12.6333 12.7521 12.86 11.9928 12.86C11.0764 12.86 10.3171 12.5533 9.71484 11.94C9.13881 11.3266 8.85079 10.4467 8.85079 9.29999C8.85079 8.07332 9.19117 6.87332 9.87194 5.69999C10.5789 4.49999 11.5608 3.55332 12.8176 2.85999L13.7209 4.25999C13.0401 4.73999 12.4903 5.27332 12.0713 5.85999C11.6786 6.44666 11.4168 7.12666 11.2858 7.89999C11.5215 7.79332 11.7964 7.73999 12.1106 7.73999C12.8437 7.73999 13.446 7.97999 13.9173 8.45999C14.3886 8.93999 14.6242 9.55333 14.6242 10.3Z"
+        fill="currentColor"
+      ></path>
+    </svg>
+  {% endif %}
+
+  <div class="card-body flex-1">
+    <blockquote class="{{ blockquote_classes }}"{% if cite_url is not empty and cite_url != 'No URL' %} cite="{{ cite_url }}"{% endif %}>
+      {% if rich_text is not empty %}
+        <div class="{{ quote_classes }}">
+          {{ rich_text|raw }}
+        </div>
+      {% endif %}
+
+      {% if cite_name is not empty or cite_text is not empty or has_media %}
+        <footer class="{{ footer_classes }}">
+          {% if has_media %}
+            <div class="avatar shrink-0">
+              <div class="w-15 rounded-full">
+                {% include 'canvas:image' ignore missing with {
+                  src: media.src,
+                  alt: media.alt|default(cite_name|default('')),
+                  class: 'object-cover w-full h-full',
+                  width: media.width|default(60),
+                  height: media.height|default(60),
+                  sizes: '60px'
+                } only %}
+              </div>
+            </div>
+          {% endif %}
+          <div>
+            {% if cite_name is not empty %}
+              <div>{{ cite_name }}</div>
+            {% endif %}
+            {% if cite_text is not empty %}
+              <cite class="font-normal not-italic">
+                {% if cite_url is not empty and cite_url != 'No URL' %}
+                  <a href="{{ cite_url }}" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:opacity-80">{{ cite_text }}</a>
+                {% else %}
+                  <span class="text-base opacity-85">{{ cite_text }}</span>
+                {% endif %}
+              </cite>
+            {% endif %}
+          </div>
+        </footer>
+      {% endif %}
+    </blockquote>
+  </div>
+</div>

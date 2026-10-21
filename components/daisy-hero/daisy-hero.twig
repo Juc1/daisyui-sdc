@@ -3,48 +3,20 @@
  * @file
  * daisy-hero.twig
  *
- * Universal DaisyUI Hero Component.
- * Supports slot-based composition, background image overlays, side-by-side media,
- * responsive aspect ratios, column ratios, and Drupal attributes.
+ * Universal DaisyUI Hero Component (Centered / Banner).
+ * Covers native DaisyUI patterns:
+ * - [Centered hero]
+ * - [Hero with overlay image]
  */
 #}
 
-{# Normalization of props #}
-{% set hero_layout = layout|default('center') %}
-{% if hero_layout == 'overlay' or hero_layout == 'centered' %}
-  {% set hero_layout = 'center' %}
-{% endif %}
-
-{% set hero_height = min_height|default(height|default('medium')) %}
-{% set hero_bg = background_color|default(background|default('base-200')) %}
-{% set hero_max_w = content_max_width|default('lg') %}
-{% set hero_overlay = overlay_opacity|default('none') %}
-{% set hero_mobile_order = mobile_order|default('media-first') %}
-{% set hero_layout_ratio = layout_ratio|default('1:1') %}
-{% set hero_aspect_ratio = media_aspect_ratio|default('auto') %}
-{% set hero_radius = media_radius|default('medium') %}
-{% set hero_data_theme = data_theme|default(theme|default('')) %}
-
-{# Media resolution #}
-{% set bg_img = background_media|default(null) %}
-{% set side_img = side_media|default(null) %}
-
-{# Fallback if generic 'media' prop was supplied #}
-{% if media is defined and media.src is not empty %}
-  {% if hero_layout in ['side-by-side', 'side-by-side-reverse'] and side_img is empty %}
-    {% set side_img = media %}
-  {% elseif bg_img is empty %}
-    {% set bg_img = media %}
-  {% endif %}
-{% endif %}
-
+{# Prop Normalization #}
+{% set is_centered = text_align|default('center') == 'center' %}
+{% set bg_img = background_media|default(media|default(null)) %}
 {% set has_bg_image = bg_img is not empty and bg_img.src is not empty %}
-{% set has_side_media = side_img is not empty and side_img.src is not empty %}
-{% set is_side_by_side = hero_layout in ['side-by-side', 'side-by-side-reverse'] %}
-{% set is_mobile_reverse = hero_mobile_order == 'content-first' %}
 
-{# Preset class mappings #}
-{% set height_classes = {
+{# CVA Variant Dictionaries #}
+{% set height_map = {
   screen: 'min-h-screen',
   large: 'min-h-[70vh]',
   medium: 'min-h-[50vh]',
@@ -52,7 +24,7 @@
   auto: 'min-h-fit py-12 md:py-20'
 } %}
 
-{% set bg_classes = {
+{% set bg_map = {
   'base-200': 'bg-base-200 text-base-content',
   'base-100': 'bg-base-100 text-base-content',
   'base-300': 'bg-base-300 text-base-content',
@@ -61,85 +33,24 @@
   transparent: 'bg-transparent text-base-content'
 } %}
 
-{% set max_width_classes = {
-  sm: 'max-w-md',
-  md: 'max-w-xl',
-  lg: 'max-w-2xl',
-  xl: 'max-w-4xl',
-  '2xl': 'max-w-6xl',
-  full: 'w-full'
-} %}
+{% set max_w_map = { sm: 'max-w-md', md: 'max-w-xl', lg: 'max-w-2xl', xl: 'max-w-4xl', '2xl': 'max-w-6xl', full: 'w-full' } %}
+{% set overlay_map = { '20': 'bg-black/20', '40': 'bg-black/40', '50': 'bg-black/50', '60': 'bg-black/60', '80': 'bg-black/80' } %}
 
-{% set overlay_classes = {
-  none: '',
-  '0%': '',
-  '20': 'bg-black/20',
-  '25%': 'bg-black/25',
-  '40': 'bg-black/40',
-  '50': 'bg-black/50',
-  '50%': 'bg-black/50',
-  '60': 'bg-black/60',
-  '70%': 'bg-black/70',
-  '80': 'bg-black/80'
-} %}
+{# Container Attributes #}
+{% set hero_attributes = (attributes is defined and attributes is not empty ? attributes : create_attribute())
+  .addClass([
+    'hero',
+    'not-prose',
+    'relative',
+    'w-full',
+    'overflow-hidden',
+    height_map[min_height|default('medium')]|default('min-h-[50vh]'),
+    not has_bg_image ? bg_map[background_color|default('base-200')]|default('bg-base-200 text-base-content') : 'text-neutral-content'
+  ])
+%}
 
-{% set media_ratio_classes = {
-  '1:1': 'lg:flex-1 lg:basis-1/2',
-  '1:2': 'lg:flex-1 lg:basis-1/3',
-  '2:1': 'lg:flex-1 lg:basis-2/3'
-} %}
-
-{% set content_ratio_classes = {
-  '1:1': 'lg:flex-1 lg:basis-1/2',
-  '1:2': 'lg:flex-1 lg:basis-2/3',
-  '2:1': 'lg:flex-1 lg:basis-1/3'
-} %}
-
-{% set media_aspect_classes = {
-  auto: '',
-  '1:1': 'aspect-1/1',
-  '4:3': 'aspect-4/3',
-  '3:2': 'aspect-3/2',
-  '16:9': 'aspect-16/9'
-} %}
-
-{% set media_radius_classes = {
-  none: 'rounded-none',
-  small: 'rounded-sm',
-  medium: 'rounded-2xl',
-  large: 'rounded-3xl',
-  full: 'rounded-full'
-} %}
-
-{% set hero_content_layout_classes = {
-  'side-by-side': (is_mobile_reverse ? 'flex-col-reverse' : 'flex-col') ~ ' lg:flex-row gap-8 lg:gap-16',
-  'side-by-side-reverse': (is_mobile_reverse ? 'flex-col-reverse' : 'flex-col') ~ ' lg:flex-row-reverse gap-8 lg:gap-16',
-  left: 'flex-col items-start text-left',
-  center: 'flex-col items-center text-center'
-} %}
-
-{% set content_wrapper_layout_classes = {
-  'side-by-side': 'items-start text-left',
-  'side-by-side-reverse': 'items-start text-left',
-  left: 'items-start text-left w-full',
-  center: 'items-center text-center'
-} %}
-
-{% set hero_classes = [
-  'hero',
-  'not-prose',
-  'relative',
-  'w-full',
-  'overflow-hidden',
-  height_classes[hero_height]|default('min-h-[50vh]'),
-  not has_bg_image ? bg_classes[hero_bg]|default('bg-base-200 text-base-content') : 'text-neutral-content'
-] %}
-
-{% set hero_attributes = attributes is defined and attributes is not empty ? attributes : create_attribute() %}
-{% set hero_attributes = hero_attributes.addClass(hero_classes) %}
-
-{% if hero_data_theme is not empty and hero_data_theme != 'default' %}
-  {% set hero_attributes = hero_attributes.setAttribute('data-theme', hero_data_theme) %}
+{% if data_theme is defined and data_theme is not empty and data_theme != 'default' %}
+  {% set hero_attributes = hero_attributes.setAttribute('data-theme', data_theme) %}
 {% endif %}
 
 {% if has_bg_image %}
@@ -147,62 +58,29 @@
 {% endif %}
 
 <div {{ hero_attributes }}>
-  {% if has_bg_image and hero_overlay != 'none' %}
-    <div class="hero-overlay {{ overlay_classes[hero_overlay]|default('bg-black/40') }}"></div>
+  {# [DaisyUI: Hero with overlay image] #}
+  {% if has_bg_image and overlay_opacity|default('none') != 'none' %}
+    <div class="hero-overlay {{ overlay_map[overlay_opacity]|default('bg-black/40') }}"></div>
   {% endif %}
 
-  {% set media_rendered %}
-    {% if is_side_by_side and has_side_media %}
-      <div class="shrink-0 w-full {{ media_ratio_classes[hero_layout_ratio]|default('lg:flex-1 lg:basis-1/2') }}">
-        <div class="w-full overflow-hidden shadow-2xl {{ media_radius_classes[hero_radius]|default('rounded-2xl') }} {{ media_aspect_classes[hero_aspect_ratio]|default('') }}">
-          <img
-            src="{{ side_img.src }}"
-            alt="{{ side_img.alt|default('') }}"
-            class="w-full {{ hero_aspect_ratio == 'auto' ? 'h-auto' : 'h-full' }} object-cover"
-            width="{{ side_img.width|default('') }}"
-            height="{{ side_img.height|default('') }}"
-            loading="eager"
-          />
-        </div>
-      </div>
-    {% elseif not is_side_by_side and has_side_media %}
-      <div class="shrink-0 max-w-sm lg:max-w-md w-full overflow-hidden shadow-2xl {{ media_radius_classes[hero_radius]|default('rounded-2xl') }} {{ media_aspect_classes[hero_aspect_ratio]|default('') }}">
-        <img
-          src="{{ side_img.src }}"
-          alt="{{ side_img.alt|default('') }}"
-          class="w-full {{ hero_aspect_ratio == 'auto' ? 'h-auto' : 'h-full' }} object-cover"
-          width="{{ side_img.width|default('') }}"
-          height="{{ side_img.height|default('') }}"
-          loading="eager"
-        />
-      </div>
-    {% endif %}
-    {% block media_slot %}
-      {% if media_slot is defined and media_slot is not empty %}
-        {{ media_slot }}
-      {% endif %}
-    {% endblock %}
-  {% endset %}
-
-  <div class="hero-content w-full px-4 py-8 md:py-12 {{ hero_content_layout_classes[hero_layout]|default('flex-col items-center text-center') }}">
-    {% if media_rendered|trim is not empty %}
-      {{ media_rendered }}
-    {% endif %}
-
-    <div class="flex flex-col gap-4 md:gap-6 {{ content_wrapper_layout_classes[hero_layout]|default('items-center text-center') }} {{ is_side_by_side ? (content_ratio_classes[hero_layout_ratio]|default('lg:flex-1 lg:basis-1/2') ~ ' w-full') : max_width_classes[hero_max_w]|default('max-w-2xl') }}">
+  {# [DaisyUI: Centered hero] #}
+  <div class="hero-content max-w-none w-full px-4 py-8 md:py-12 {{ is_centered ? 'text-center' : 'text-left' }}">
+    <div class="flex flex-col gap-4 md:gap-6 {{ is_centered ? 'items-center mx-auto' : 'items-start' }} {{ max_w_map[content_max_width|default('lg')]|default('max-w-2xl') }}">
       {% block content %}
         {% if content is defined and content is not empty %}
           {{ content }}
         {% elseif title is not empty or text is not empty %}
           {% if title is not empty %}
-            {% set heading_level = title_level|default(1) %}
-            {% if heading_level == 1 %}
-              <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight">{{ title }}</h1>
-            {% elseif heading_level == 2 %}
-              <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight">{{ title }}</h2>
-            {% else %}
-              <h3 class="text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight">{{ title }}</h3>
-            {% endif %}
+            {% set h_tag = title_level|default(1) in [1, 2, 3, 4, 5, 6] ? ('h' ~ title_level|default(1)) : 'h1' %}
+            {% set title_size_map = {
+              h1: 'text-3xl sm:text-5xl lg:text-6xl',
+              h2: 'text-2xl sm:text-4xl lg:text-5xl',
+              h3: 'text-xl sm:text-3xl lg:text-4xl',
+              h4: 'text-lg sm:text-2xl lg:text-3xl',
+              h5: 'text-base sm:text-xl lg:text-2xl',
+              h6: 'text-base sm:text-lg lg:text-xl'
+            } %}
+            <{{ h_tag }} class="{{ title_size_map[h_tag]|default('text-3xl sm:text-5xl lg:text-6xl') }} font-bold tracking-tight">{{ title }}</{{ h_tag }}>
           {% endif %}
           {% if text is not empty %}
             <div class="py-2 text-lg md:text-xl opacity-90 [&_p]:mb-2 [&_p:last-child]:mb-0">

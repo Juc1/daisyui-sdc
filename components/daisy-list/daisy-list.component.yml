@@ -1,0 +1,135 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Daisy List
+description: "Universal DaisyUI 5 list component (.list + .list-row) supporting icon + text rows, semantic colors, spacing, and dividers."
+group: DaisyUI
+status: stable
+props:
+  type: object
+  required:
+    - text
+  properties:
+    text:
+      type: string
+      title: List Content
+      description: "Bulleted list items. Each <li> is automatically rendered as a semantic DaisyUI .list-row with the selected icon."
+      contentMediaType: text/html
+      x-formatting-context: block
+      default: "<ul>
+        <li>First list item</li>
+        <li>Second list item</li>
+        <li>Third list item</li>
+        </ul>"
+      examples:
+        - "<ul>
+          <li>First list item</li>
+          <li>Second list item</li>
+          <li>Third list item</li>
+          </ul>"
+    icon:
+      type: string
+      title: Icon Name
+      description: "Icon identifier from the Phosphor icon pack (e.g. 'check', 'check-circle', 'caret-right', 'arrow-right', 'star', 'sparkle'). Set to 'none' to hide icons."
+      default: "check"
+      examples:
+        - "check"
+        - "caret-right"
+    icon_color:
+      type: string
+      title: Icon Color
+      description: "DaisyUI semantic color token for the list icon."
+      enum:
+        - default
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - info
+        - success
+        - warning
+        - error
+      default: primary
+      meta:enum:
+        default: "Default (Inherit Text)"
+        primary: Primary
+        secondary: Secondary
+        accent: Accent
+        neutral: Neutral
+        info: Info
+        success: Success
+        warning: Warning
+        error: Error
+      examples:
+        - primary
+    icon_size:
+      type: string
+      title: Icon Size
+      enum:
+        - xs
+        - sm
+        - md
+        - lg
+        - xl
+      default: sm
+      meta:enum:
+        xs: "Extra Small (16px)"
+        sm: "Small (20px)"
+        md: "Medium (24px)"
+        lg: "Large (28px)"
+        xl: "Extra Large (32px)"
+      examples:
+        - sm
+    icon_pack:
+      type: string
+      title: Icon Pack
+      description: "Icon pack identifier used by Drupal core Icon API."
+      default: phosphor
+      examples:
+        - phosphor
+    style:
+      type: string
+      title: List Style
+      enum:
+        - clean
+        - divided
+        - boxed
+      default: clean
+      meta:enum:
+        clean: "Clean (Icon list without row dividers)"
+        divided: "Divided (DaisyUI list rows with dividers)"
+        boxed: "Boxed Surface (Card list with dividers)"
+      examples:
+        - clean
+    spacing:
+      type: string
+      title: Row Spacing
+      enum:
+        - tight
+        - normal
+        - relaxed
+      default: normal
+      meta:enum:
+        tight: Tight
+        normal: "Normal (Default)"
+        relaxed: Relaxed
+      examples:
+        - normal
+    text_size:
+      type: string
+      title: Text Size
+      enum:
+        - sm
+        - md
+        - lg
+        - xl
+      default: lg
+      meta:enum:
+        sm: Small
+        md: Medium
+        lg: "Large (Responsive Default)"
+        xl: Extra Large
+      examples:
+        - lg
+    list_classes:
+      type: string
+      title: Additional Classes
+      description: "Additional CSS utility classes."
