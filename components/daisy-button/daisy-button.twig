@@ -17,6 +17,7 @@
 {% set button_variant = variant in ['solid', 'outline', 'soft', 'dash'] ? variant : (style_modifier|default('solid')) %}
 {% set button_size = size|default('md') %}
 {% set button_shape = shape|default(width == 'full' or mobile_width|default(false) ? 'block' : 'default') %}
+{% set button_radius = radius|default('default') %}
 {% set button_icon = icon|default('') %}
 {% set button_icon_pack = icon_pack|default('phosphor') %}
 {% set is_icon_start = (icon_position|default(icon_first is defined and not icon_first ? 'end' : 'start')) == 'start' %}
@@ -59,19 +60,28 @@
 {% set shape_classes = {
   default: '',
   wide: 'btn-wide',
+  equal: 'flex-1 w-full',
   block: 'btn-block',
   square: 'btn-square',
   circle: 'btn-circle'
+} %}
+
+{% set radius_classes = {
+  default: '',
+  none: 'rounded-none'
 } %}
 
 {# Build DaisyUI class list #}
 {% set classes = [
   'btn',
   'no-underline!',
+  'whitespace-nowrap',
+  'flex-1',
   style_classes[button_style]|default('btn-primary'),
   variant_classes[button_variant]|default(''),
   size_classes[button_size]|default(''),
   shape_classes[button_shape]|default(''),
+  radius_classes[button_radius]|default(''),
   has_url and is_disabled ? 'btn-disabled pointer-events-none' : ''
 ]|filter(v => v is not empty) %}
 
@@ -102,31 +112,16 @@
 
 {% import _self as macros %}
 
-{# Capture prefix and suffix slots #}
-{% set prefix_content %}
-  {% block prefix %}
-    {% if prefix is defined and prefix is not empty %}{{ prefix }}{% endif %}
-  {% endblock %}
-{% endset %}
-
-{% set suffix_content %}
-  {% block suffix %}
-    {% if suffix is defined and suffix is not empty %}{{ suffix }}{% endif %}
-  {% endblock %}
-{% endset %}
-
 {# Button inner contents #}
 {% set button_content %}
   {% if is_icon_start and button_icon is not empty %}{{ macros.render_icon(button_icon_pack, button_icon) }}{% endif %}
-  {% if prefix_content|trim is not empty %}{{ prefix_content }}{% endif %}
   {% if button_label is not empty %}<span>{{ button_label }}</span>{% endif %}
-  {% if suffix_content|trim is not empty %}{{ suffix_content }}{% endif %}
   {% if not is_icon_start and button_icon is not empty %}{{ macros.render_icon(button_icon_pack, button_icon) }}{% endif %}
 {% endset %}
 
 {# Tooltip wrapper #}
 {% if btn_tooltip is not empty %}
-  <span class="tooltip {{ button_shape == 'block' ? 'w-full' : '' }}" data-tip="{{ btn_tooltip }}">
+  <span class="tooltip flex-1 flex {{ button_shape == 'block' ? 'w-full block' : '' }}" data-tip="{{ btn_tooltip }}">
 {% endif %}
 
 {% if has_url %}

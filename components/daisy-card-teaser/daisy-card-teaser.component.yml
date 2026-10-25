@@ -1,6 +1,6 @@
 $schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
-name: Daisy Card
-description: "Universal DaisyUI Card component supporting vertical/horizontal orientations, 10px accent borders, image overlays, and slots (header, content, actions)."
+name: Daisy Card Teaser
+description: "Streamlined, pure-prop teaser card for Views listings, node grids, and article feeds with accessible stretched links and zero slot clutter."
 group: DaisyUI
 status: stable
 props:
@@ -8,10 +8,11 @@ props:
   properties:
     heading_text:
       type: string
-      title: Heading
-      description: "Default card title (used when the header slot is not supplied)."
+      title: Title
+      description: "Card or article title."
+      default: "Article Title"
       examples:
-        - "Card Title"
+        - "A New Home for your Skin & Health"
     level:
       type: number
       title: Heading Level
@@ -29,11 +30,16 @@ props:
       title: Link URL
       format: uri-reference
       examples:
-        - "/articles/my-post"
+        - "/blog/my-post"
     media:
       $ref: json-schema-definitions://canvas.module/image
       title: Image Media
       type: object
+      examples:
+        - src: "https://placehold.co/1200x800"
+          alt: "Article thumbnail"
+          width: 1200
+          height: 800
     caption:
       type: string
       title: Image Caption
@@ -49,23 +55,35 @@ props:
         - "1:1"
         - "3:2"
         - "2:1"
-      default: auto
+      default: "3:2"
       meta:enum:
         auto: "Natural / Auto"
         "16:9": "16:9 (Widescreen)"
         "4:3": "4:3 (Standard)"
         "1:1": "1:1 (Square)"
-        "3:2": "3:2"
-        "2:1": "2:1"
+        "3:2": "3:2 (Standard Photo)"
+        "2:1": "2:1 (Panoramic)"
       examples:
-        - auto
+        - "3:2"
     text:
       type: string
-      title: Description / Body Text
+      title: Summary / Excerpt
       contentMediaType: text/html
       x-formatting-context: block
       examples:
         - "<p>Engaging summary text for the card content.</p>"
+    category:
+      type: string
+      title: Category / Tag
+      description: "Optional top badge or category label (e.g. 'News', 'Skincare')."
+      examples:
+        - "Skincare"
+    date:
+      type: string
+      title: Date or Metadata
+      description: "Optional metadata text displayed at the bottom (e.g. 'Oct 25, 2026' or '5 min read')."
+      examples:
+        - "Oct 25, 2026"
     is_text_centered:
       type: boolean
       title: Center Text
@@ -84,18 +102,6 @@ props:
         horizontal: "Horizontal (Side-by-side)"
       examples:
         - vertical
-    height:
-      type: string
-      title: Card Height
-      enum:
-        - auto
-        - full
-      default: auto
-      meta:enum:
-        auto: "Auto (Fits content)"
-        full: "Full (Equal height in grid)"
-      examples:
-        - auto
     style:
       type: string
       title: Style Mode
@@ -104,14 +110,12 @@ props:
         - framed
         - border
         - dash
-        - overlay
       default: full
       meta:enum:
         full: "Full (Default)"
         framed: "Framed (Padded with inset)"
         border: "Bordered (card-border)"
         dash: "Dashed border (card-dash)"
-        overlay: "Image overlay (image-full)"
       examples:
         - full
     size:
@@ -181,7 +185,6 @@ props:
       default: false
       examples:
         - false
-        - true
     border_top_color:
       type: string
       title: Top Border Color
@@ -205,13 +208,3 @@ props:
       type: string
       title: Additional Classes
       description: "Additional CSS utility classes."
-slots:
-  header:
-    title: Card Header
-    description: "Slot for custom header content (icon + title, stacked icon tile, badge, avatar, or custom heading markup). Overrides default heading_text."
-  content:
-    title: Custom Card Content
-    description: "Slot for custom body content, badges, metadata, or author chips inside the card body."
-  actions:
-    title: Card Actions
-    description: "Slot for action buttons or links inside .card-actions."

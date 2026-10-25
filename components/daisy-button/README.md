@@ -29,7 +29,8 @@ A flexible, theme-agnostic button component conforming strictly to DaisyUI 5 CSS
 | `style` | `string` | `"primary"` | DaisyUI semantic color: `primary`, `secondary`, `accent`, `neutral`, `info`, `success`, `warning`, `error`, `ghost`, `link`. |
 | `variant` | `string` | `"solid"` | Visual appearance: `solid`, `outline`, `soft`, `dash`. |
 | `size` | `string` | `"md"` | Size scale: `xs`, `sm`, `md`, `lg`, `xl`. |
-| `shape` | `string` | `"default"` | Shape: `default`, `wide`, `block`, `square`, `circle`. |
+| `shape` | `string` | `"default"` | Shape: `default`, `wide`, `equal` (flex-1), `block`, `square`, `circle`. |
+| `radius` | `string` | `"default"` | Corner rounding: `default` (Rounded), `none` (Sharp / None). |
 | `icon` | `string` | `""` | Icon identifier from the icon pack (e.g. `arrow-right`, `download`). |
 | `icon_position`| `string` | `"start"` | `start` (before label) or `end` (after label). |
 | `icon_pack` | `string` | `"phosphor"`| Icon pack identifier for Drupal core Icon API. |
@@ -40,15 +41,6 @@ A flexible, theme-agnostic button component conforming strictly to DaisyUI 5 CSS
 | `aria_label` | `string` | `""` | Accessible name for screen readers. |
 | `title` | `string` | `""` | Standard HTML hover title attribute. |
 | `data_theme` | `string` | `""` | Optional per-button DaisyUI theme override (e.g. `dark`, `light`). |
-
----
-
-## Slots
-
-| Slot | Description |
-| :--- | :--- |
-| `prefix` | Custom content or badge placed before the button label (inside the button). |
-| `suffix` | Custom content or badge placed after the button label (inside the button). |
 
 ---
 

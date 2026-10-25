@@ -73,23 +73,34 @@
 
 {% import _self as macros %}
 
-{% set has_custom_content = content is defined and content is not empty %}
+{# Capture custom content slot #}
+{% set custom_content %}
+  {% block content %}
+    {% if content is defined and content is not empty %}{{ content }}{% endif %}
+  {% endblock %}
+{% endset %}
+
+{% set has_custom_content = custom_content|trim is not empty %}
 {% set has_text = text is defined and text is not empty %}
 {% set has_icon = divider_icon is not empty and divider_icon != 'none' %}
 
-<div {{ divider_attributes }}>
-  {% block content %}
-    {% if has_custom_content %}
-      {{ content }}
-    {% elseif has_icon and has_text %}
-      <span class="inline-flex items-center gap-1.5">
-        {{ macros.render_icon(divider_icon_pack, divider_icon) }}
-        <span>{{ text }}</span>
-      </span>
-    {% elseif has_icon %}
+{% set inner_content %}
+  {% if has_custom_content %}
+    {{ custom_content }}
+  {% elseif has_icon and has_text %}
+    <span class="inline-flex items-center gap-1.5">
       {{ macros.render_icon(divider_icon_pack, divider_icon) }}
-    {% elseif has_text %}
-      {{ text }}
-    {% endif %}
-  {% endblock %}
-</div>
+      <span>{{ text }}</span>
+    </span>
+  {% elseif has_icon %}
+    {{ macros.render_icon(divider_icon_pack, divider_icon) }}
+  {% elseif has_text %}
+    {{ text }}
+  {% endif %}
+{% endset %}
+
+{% if inner_content|trim is not empty %}
+  <div {{ divider_attributes }}>{{ inner_content|trim|raw }}</div>
+{% else %}
+  <div {{ divider_attributes }}></div>
+{% endif %}

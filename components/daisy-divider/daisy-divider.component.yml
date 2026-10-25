@@ -1,6 +1,6 @@
 $schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
 name: Daisy Divider
-description: "Universal DaisyUI visual separator component supporting orientation, color tokens, text, icons, and slots."
+description: "Universal DaisyUI visual separator component supporting orientation, color tokens, text, icons, and slots. Renders as a solid continuous line when text, icon, and slot are omitted."
 group: DaisyUI
 status: stable
 props:
@@ -9,7 +9,7 @@ props:
     text:
       type: string
       title: Divider Text
-      description: "Optional text displayed within the divider line (e.g. 'OR', 'AND')."
+      description: "Optional text displayed within the divider line (e.g. 'OR', 'AND'). Leave empty for a solid continuous line."
       examples:
         - "OR"
     color:

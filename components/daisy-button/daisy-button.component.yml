@@ -90,15 +90,30 @@ props:
       enum:
         - default
         - wide
+        - equal
         - block
         - square
         - circle
       meta:enum:
         default: Default (Auto width)
         wide: Wide (min-w-64)
+        equal: Equal width (flex-1)
         block: Full width (block)
         square: Square (1:1 aspect)
         circle: Circle
+      default: default
+      examples:
+        - default
+    radius:
+      type: string
+      title: Border Radius
+      description: "Corner rounding for the button."
+      enum:
+        - default
+        - none
+      meta:enum:
+        default: Rounded (Default)
+        none: None (Sharp)
       default: default
       examples:
         - default
@@ -180,10 +195,3 @@ props:
       examples:
         - "dark"
         - "light"
-slots:
-  prefix:
-    title: Prefix Content
-    description: "Optional custom markup, icon, or badge placed before the button label."
-  suffix:
-    title: Suffix Content
-    description: "Optional custom markup, icon, or badge placed after the button label."

@@ -11,9 +11,10 @@ Packaged as a decoupled Drupal module so your components stay independent of you
 | Component | Description | Key Features |
 | :--- | :--- | :--- |
 | **[`daisy-badge`](components/daisy-badge/)** | Small metadata indicators & tags | 10 DaisyUI color roles, 4 modifiers, sizes (`xs`-`xl`), link/span support, core icon API, `content` slot. |
-| **[`daisy-button`](components/daisy-button/)** | Interactive button & anchor links | DaisyUI 5 color tokens, modifier styles, shapes (`wide`, `block`, `square`, `circle`), tooltips, `prefix`/`suffix` slots, disabled states. |
-| **[`daisy-card`](components/daisy-card/)** | Flexible content & media cards | Vertical / horizontal split, **10px top accent border**, image overlays, accessible stretched link, `header`, `content`, and `actions` slots. |
-| **[`daisy-divider`](components/daisy-divider/)** | Visual separators | Zero contrib dependencies (pure Twig), vertical, horizontal, and responsive orientation, start/center/end alignment, `content` slot. |
+| **[`daisy-button`](components/daisy-button/)** | Interactive button & anchor links | DaisyUI 5 color tokens, modifier styles, shapes (`wide`, `equal`, `block`, `square`, `circle`), tooltips, disabled states. |
+| **[`daisy-card-teaser`](components/daisy-card-teaser/)** | Structured teaser card (pure props, zero slots) | Ideal for Views grids & content templates. Configurable image, title, excerpt/body, date/author meta, button link with accessible stretched click area. |
+| **[`daisy-card-with-slots`](components/daisy-card-with-slots/)** | Flexible composable card container (slots) | Open container card with `content` and `actions` slots, optional image, and customizable styles for flexible Canvas UI composition. |
+| **[`daisy-divider`](components/daisy-divider/)** | Visual separators | Zero contrib dependencies (pure Twig), solid continuous line or text/icon, vertical, horizontal, and responsive orientation, start/center/end alignment, `content` slot. |
 | **[`daisy-hero`](components/daisy-hero/)** | Visual page banner container | Slot-first container (`content` and `media_slot`), desktop column ratios (`1:1`, `1:2`, `2:1`), mobile stacking order, dark opacity overlays, aspect ratios. |
 | **[`daisy-list`](components/daisy-list/)** | Icon + text list container | DaisyUI 5 `.list` + `.list-row` grid rows, automatic `<ul><li>` parsing, core icon API, semantic icon colors, clean/divided/boxed styles, `items` slot. |
 | **[`theme_controller_circles`](components/theme_controller_circles/)** | Multi-skin color theme switcher | Radio palette swatches with active rings, `localStorage` persistence, multi-widget synchronization, and `[data-theme-reset]` support. |
@@ -63,12 +64,28 @@ Once enabled, all components are automatically available under the `daisyui_sdc:
   style: 'outline',
 }) }}
 
-{# Card #}
-{{ include('daisyui_sdc:daisy-card', {
-  title: 'Feature Card',
-  accent_border: true,
-  content: '<p>Accessible card component with semantic tokens.</p>',
+{# Teaser Card (Pure Props, no slots - ideal for Views & nodes) #}
+{{ include('daisyui_sdc:daisy-card-teaser', {
+  title: 'Blog Post Title',
+  url: '/blog/post-1',
+  text: 'Excerpt summary text...',
+  image: '/sites/default/files/blog.jpg',
+  button_text: 'Read more',
 }) }}
+
+{# Composable Card with Slots #}
+{% embed 'daisyui_sdc:daisy-card-with-slots' with {
+  image: '/sites/default/files/hero.jpg',
+  accent_border: true,
+} %}
+  {% block content %}
+    <h3 class="card-title text-xl font-bold">Custom Heading</h3>
+    <p>Custom content dropped into the card slot.</p>
+  {% endblock %}
+  {% block actions %}
+    {{ include('daisyui_sdc:daisy-button', { label: 'Click here' }) }}
+  {% endblock %}
+{% endembed %}
 
 {# Divider #}
 {{ include('daisyui_sdc:daisy-divider', {

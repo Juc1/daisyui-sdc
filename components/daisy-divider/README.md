@@ -22,7 +22,7 @@ A flexible visual separator component adhering strictly to DaisyUI 5 CSS specifi
 
 | Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `text` | `string` | `""` | Optional text displayed inside the divider (e.g. `'OR'`). |
+| `text` | `string` | `""` | Optional text displayed inside the divider (e.g. `'OR'`). Leave empty for a solid continuous line. |
 | `color` | `string` | `"default"` | Theme color: `default`, `neutral`, `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `error`. |
 | `direction` | `string` | `"vertical"` | Orientation: `vertical`, `horizontal`, `responsive-md`, `responsive-lg`. |
 | `position` | `string` | `"center"` | Placement: `center`, `start`, `end`. |
@@ -42,7 +42,14 @@ A flexible visual separator component adhering strictly to DaisyUI 5 CSS specifi
 
 ## Twig Usage Examples
 
-### 1. Basic Text Divider
+### 1. Plain Continuous Line Divider
+```twig
+{{ include('mytheme:daisy-divider', {
+  color: 'neutral'
+}, with_context: false) }}
+```
+
+### 2. Basic Text Divider
 ```twig
 {{ include('mytheme:daisy-divider', {
   text: 'OR',
@@ -50,7 +57,7 @@ A flexible visual separator component adhering strictly to DaisyUI 5 CSS specifi
 }, with_context: false) }}
 ```
 
-### 2. Responsive Divider (Vertical on mobile, Horizontal on desktop)
+### 3. Responsive Divider (Vertical on mobile, Horizontal on desktop)
 ```twig
 {{ include('mytheme:daisy-divider', {
   text: 'AND',
