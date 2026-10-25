@@ -160,9 +160,11 @@ props:
       type: string
       title: Body Copy
       description: "Hero descriptive body copy."
-      default: "Deliver a compelling summary of your value proposition with a clear call to action."
+      contentMediaType: text/html
+      x-formatting-context: block
+      default: "<p>Deliver a compelling summary of your value proposition with a clear call to action.</p>"
       examples:
-        - "Deliver a compelling summary of your value proposition with a clear call to action."
+        - "<p>Deliver a compelling summary of your value proposition with a clear call to action.</p>"
     cta_text:
       type: string
       title: Primary CTA Label

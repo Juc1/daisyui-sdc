@@ -130,6 +130,10 @@ props:
       type: string
       title: Body Copy
       description: "Quick prop for hero body copy when not using the content slot."
+      contentMediaType: text/html
+      x-formatting-context: block
+      examples:
+        - "<p>Engaging subtitle or promotional paragraph.</p>"
     cta_text:
       type: string
       title: CTA Button Text
