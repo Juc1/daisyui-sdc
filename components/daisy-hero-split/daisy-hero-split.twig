@@ -3,17 +3,37 @@
  * @file
  * daisy-hero-split.twig
  *
- * Universal DaisyUI Hero Component (Side by Side / Split).
- * Covers native DaisyUI patterns:
- * - [Hero with figure] (media_position: 'left')
- * - [Hero with figure but reverse order] (media_position: 'right')
+ * Turnkey DaisyUI Hero Component (Side by Side).
+ * Two-column hero with figure on one side and structured headline, text,
+ * and optional primary/secondary action buttons.
+ *
+ * Button Layout Rules:
+ * - 0 CTAs: Button container is omitted.
+ * - 1 CTA: Button is centered in the content area.
+ * - 2 CTAs: Buttons sit side-by-side on desktop (md+) and stack vertically on mobile (< md).
  */
 #}
 
 {# Prop Normalization #}
 {% set is_media_right = media_position|default('left') == 'right' %}
 {% set is_mobile_reverse = mobile_order|default('media-first') == 'content-first' %}
-{% set img = media|default(side_media|default(null)) %}
+
+{% set default_media = {
+  src: file_url('modules/custom/daisyui_sdc/components/daisy-hero-split/assets/unsplash.jpg'),
+  alt: 'Hero media placeholder',
+  width: 1200,
+  height: 900
+} %}
+
+{% if media is same as(false) %}
+  {% set img = null %}
+{% elseif media is defined and media is not empty and media.src is defined and media.src is not empty %}
+  {% set img = media %}
+{% elseif side_media is defined and side_media is not empty and side_media.src is defined and side_media.src is not empty %}
+  {% set img = side_media %}
+{% else %}
+  {% set img = default_media %}
+{% endif %}
 {% set has_media_img = img is not empty and img.src is not empty %}
 
 {# CVA Variant Dictionaries #}
@@ -63,6 +83,27 @@
   {% set hero_attributes = hero_attributes.setAttribute('data-theme', data_theme) %}
 {% endif %}
 
+{# CTA Evaluation #}
+{% set has_cta1 = cta_text is defined and cta_text is not empty and cta_url is defined and cta_url is not empty %}
+{% set has_cta2 = cta2_text is defined and cta2_text is not empty and cta2_url is defined and cta2_url is not empty %}
+{% set cta_count = (has_cta1 ? 1 : 0) + (has_cta2 ? 1 : 0) %}
+
+{% set style_map = {
+  primary: 'btn-primary',
+  secondary: 'btn-secondary',
+  accent: 'btn-accent',
+  neutral: 'btn-neutral',
+  ghost: 'btn-ghost',
+  link: 'btn-link'
+} %}
+
+{% set variant_map = {
+  solid: '',
+  outline: 'btn-outline',
+  soft: 'btn-soft',
+  dash: 'btn-dash'
+} %}
+
 <div {{ hero_attributes }}>
   <div class="hero-content max-w-none w-full px-4 py-8 md:py-12 {{ content_layout_classes }}">
     {# Media Column #}
@@ -83,34 +124,50 @@
 
     {# Content Column #}
     <div class="flex flex-col gap-4 md:gap-6 items-start text-left {{ split_ratios.content }} w-full">
-      {% block content %}
-        {% if content is defined and content is not empty %}
-          {{ content }}
-        {% elseif title is not empty or text is not empty %}
-          {% if title is not empty %}
-            {% set h_tag = title_level|default(1) in [1, 2, 3, 4, 5, 6] ? ('h' ~ title_level|default(1)) : 'h1' %}
-            {% set title_size_map = {
-              h1: 'text-3xl sm:text-5xl lg:text-5xl',
-              h2: 'text-2xl sm:text-4xl lg:text-4xl',
-              h3: 'text-xl sm:text-3xl lg:text-3xl',
-              h4: 'text-lg sm:text-2xl lg:text-2xl',
-              h5: 'text-base sm:text-xl lg:text-xl',
-              h6: 'text-base sm:text-lg lg:text-lg'
-            } %}
-            <{{ h_tag }} class="{{ title_size_map[h_tag]|default('text-3xl sm:text-5xl lg:text-5xl') }} font-bold tracking-tight">{{ title }}</{{ h_tag }}>
+      {# Headline #}
+      {% if title is defined and title is not empty %}
+        {% set h_tag = title_level|default(1) in [1, 2, 3, 4, 5, 6] ? ('h' ~ title_level|default(1)) : 'h1' %}
+        {% set title_size_map = {
+          h1: 'text-3xl sm:text-5xl lg:text-5xl',
+          h2: 'text-2xl sm:text-4xl lg:text-4xl',
+          h3: 'text-xl sm:text-3xl lg:text-3xl',
+          h4: 'text-lg sm:text-2xl lg:text-2xl',
+          h5: 'text-base sm:text-xl lg:text-xl',
+          h6: 'text-base sm:text-lg lg:text-lg'
+        } %}
+        <{{ h_tag }} class="{{ title_size_map[h_tag]|default('text-3xl sm:text-5xl lg:text-5xl') }} font-bold tracking-tight">{{ title }}</{{ h_tag }}>
+      {% endif %}
+
+      {# Body Copy #}
+      {% if text is defined and text is not empty %}
+        <div class="py-2 text-base md:text-lg opacity-90 [&_p]:mb-2 [&_p:last-child]:mb-0">
+          {{ text }}
+        </div>
+      {% endif %}
+
+      {# Action Buttons: 1 CTA = centered, 2 CTAs = side-by-side on desktop, stacked on mobile #}
+      {% if cta_count == 1 %}
+        <div class="mt-2 flex w-full justify-center">
+          {% if has_cta1 %}
+            <a href="{{ cta_url }}" class="btn {{ style_map[cta_style|default('primary')]|default('btn-primary') }} {{ variant_map[cta_variant|default('solid')]|default('') }}">
+              {{ cta_text }}
+            </a>
+          {% else %}
+            <a href="{{ cta2_url }}" class="btn {{ style_map[cta2_style|default('neutral')]|default('btn-neutral') }} {{ variant_map[cta2_variant|default('outline')]|default('btn-outline') }}">
+              {{ cta2_text }}
+            </a>
           {% endif %}
-          {% if text is not empty %}
-            <div class="py-2 text-base md:text-lg opacity-90 [&_p]:mb-2 [&_p:last-child]:mb-0">
-              {{ text }}
-            </div>
-          {% endif %}
-          {% if cta_text is not empty and cta_url is not empty %}
-            <div class="mt-2 flex flex-wrap gap-3">
-              <a href="{{ cta_url }}" class="btn btn-primary">{{ cta_text }}</a>
-            </div>
-          {% endif %}
-        {% endif %}
-      {% endblock %}
+        </div>
+      {% elseif cta_count == 2 %}
+        <div class="mt-2 flex w-full flex-col md:flex-row gap-3 md:gap-4 items-center justify-center md:justify-start">
+          <a href="{{ cta_url }}" class="btn {{ style_map[cta_style|default('primary')]|default('btn-primary') }} {{ variant_map[cta_variant|default('solid')]|default('') }} w-full md:w-auto text-center">
+            {{ cta_text }}
+          </a>
+          <a href="{{ cta2_url }}" class="btn {{ style_map[cta2_style|default('neutral')]|default('btn-neutral') }} {{ variant_map[cta2_variant|default('outline')]|default('btn-outline') }} w-full md:w-auto text-center">
+            {{ cta2_text }}
+          </a>
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>

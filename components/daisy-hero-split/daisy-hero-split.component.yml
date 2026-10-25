@@ -1,6 +1,6 @@
 $schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
 name: Daisy Hero (Side by Side)
-description: "Two-column hero layout with media/figure on one side and content on the other [DaisyUI: Hero with figure & Hero with figure but reverse order]."
+description: "Turnkey two-column hero layout with media/figure on one side and structured headline, text, and optional primary/secondary CTAs [DaisyUI: Hero with figure]."
 group: DaisyUI
 status: stable
 props:
@@ -11,6 +11,11 @@ props:
       title: Media Image
       description: "Image displayed alongside content in the split hero [DaisyUI: Hero with figure]."
       type: object
+      examples:
+        - src: "/modules/custom/daisyui_sdc/components/daisy-hero-split/assets/unsplash.jpg"
+          alt: "Hero media placeholder"
+          width: 1200
+          height: 900
     media_position:
       type: string
       title: Media Position (Desktop)
@@ -140,29 +145,123 @@ props:
     title:
       type: string
       title: Headline Title
-      description: "Quick prop for hero title when not using the content slot."
+      description: "Hero headline text."
+      default: "Engage Your Audience"
       examples:
-        - "Great headline"
+        - "Engage Your Audience"
     title_level:
       type: integer
       title: Heading Level
-      description: "HTML heading level (1-6) for the title prop."
+      description: "HTML heading level (1-6) for the headline."
       default: 1
       examples:
         - 1
     text:
       type: string
       title: Body Copy
-      description: "Quick prop for hero body copy when not using the content slot."
+      description: "Hero descriptive body copy."
+      default: "Deliver a compelling summary of your value proposition with a clear call to action."
+      examples:
+        - "Deliver a compelling summary of your value proposition with a clear call to action."
     cta_text:
       type: string
-      title: CTA Button Text
-      description: "Quick prop for call-to-action button label."
+      title: Primary CTA Label
+      description: "Label for the primary call-to-action button."
+      default: "Get Started"
+      examples:
+        - "Get Started"
     cta_url:
       type: string
-      title: CTA Button URL
-      description: "Destination URL for call-to-action button."
-slots:
-  content:
-    title: Content
-    description: "Main content area for headings, text, buttons, and composite blocks."
+      title: Primary CTA URL
+      description: "Destination URL for the primary button."
+      default: "#"
+      examples:
+        - "#"
+    cta_style:
+      type: string
+      title: Primary CTA Style
+      description: "DaisyUI color role for primary button."
+      enum:
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - ghost
+        - link
+      meta:enum:
+        primary: "Primary"
+        secondary: "Secondary"
+        accent: "Accent"
+        neutral: "Neutral"
+        ghost: "Ghost"
+        link: "Link"
+      default: primary
+      examples:
+        - primary
+    cta_variant:
+      type: string
+      title: Primary CTA Variant
+      description: "Visual variant for primary button."
+      enum:
+        - solid
+        - outline
+        - soft
+        - dash
+      meta:enum:
+        solid: "Solid"
+        outline: "Outline"
+        soft: "Soft"
+        dash: "Dash"
+      default: solid
+      examples:
+        - solid
+    cta2_text:
+      type: string
+      title: Secondary CTA Label
+      description: "Optional label for a second call-to-action button."
+      examples:
+        - "Learn More"
+    cta2_url:
+      type: string
+      title: Secondary CTA URL
+      description: "Destination URL for the second button."
+      examples:
+        - "/about"
+    cta2_style:
+      type: string
+      title: Secondary CTA Style
+      description: "DaisyUI color role for secondary button."
+      enum:
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - ghost
+        - link
+      meta:enum:
+        primary: "Primary"
+        secondary: "Secondary"
+        accent: "Accent"
+        neutral: "Neutral"
+        ghost: "Ghost"
+        link: "Link"
+      default: neutral
+      examples:
+        - neutral
+    cta2_variant:
+      type: string
+      title: Secondary CTA Variant
+      description: "Visual variant for secondary button."
+      enum:
+        - solid
+        - outline
+        - soft
+        - dash
+      meta:enum:
+        solid: "Solid"
+        outline: "Outline"
+        soft: "Soft"
+        dash: "Dash"
+      default: outline
+      examples:
+        - outline
