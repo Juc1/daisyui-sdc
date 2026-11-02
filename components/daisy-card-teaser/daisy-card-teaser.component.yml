@@ -10,9 +10,9 @@ props:
       type: string
       title: Title
       description: "Card or article title."
-      default: "Article Title"
+      default: "Card Title"
       examples:
-        - "A New Home for your Skin & Health"
+        - "Card Title"
     level:
       type: number
       title: Heading Level
@@ -75,9 +75,10 @@ props:
     category:
       type: string
       title: Category / Tag
-      description: "Optional top badge or category label (e.g. 'News', 'Skincare')."
+      description: "Optional top badge or category label (e.g. 'News', 'Category / tag')."
+      default: "Category / tag"
       examples:
-        - "Skincare"
+        - "Category / tag"
     date:
       type: string
       title: Date or Metadata

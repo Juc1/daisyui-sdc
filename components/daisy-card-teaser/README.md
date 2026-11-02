@@ -18,13 +18,13 @@ Streamlined, pure-prop teaser card component built specifically for Drupal **Vie
 
 | Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `heading_text` | `string` | `"Article Title"` | Title of the node/article. |
+| `heading_text` | `string` | `"Card Title"` | Title of the node/article. |
 | `level` | `number` (2–6) | `3` | Heading HTML tag (`<h2>`–`<h6>`). |
 | `url` | `string` (uri) | `""` | Destination URL (stretched across entire card). |
 | `media` | `object` (`canvas.module/image`) | `null` | Featured image (`src`, `alt`, `width`, `height`). |
 | `aspect_ratio` | `enum` | `'3:2'` | `'auto'`, `'16:9'`, `'4:3'`, `'1:1'`, `'3:2'`, `'2:1'`. |
 | `text` | `string` (html) | `""` | Summary / excerpt text. |
-| `category` | `string` | `""` | Optional top category badge (e.g. "News", "Skincare"). |
+| `category` | `string` | `"Category / tag"` | Optional top category badge (e.g. "News", "Category / tag"). |
 | `date` | `string` | `""` | Optional metadata pinned to the bottom (e.g. "Oct 25, 2026", "5 min read"). |
 | `orientation` | `enum` | `'vertical'` | `'vertical'`, `'horizontal'`. |
 | `style` | `enum` | `'full'` | `'full'`, `'framed'`, `'border'`, `'dash'`. |

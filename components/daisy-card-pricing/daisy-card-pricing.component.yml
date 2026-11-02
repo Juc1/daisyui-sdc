@@ -10,7 +10,7 @@ props:
       type: string
       title: Heading
       examples:
-        - "Single Session"
+        - "Standard Plan"
     description:
       type: string
       title: Description
@@ -18,7 +18,7 @@ props:
       contentMediaType: text/html
       x-formatting-context: block
       examples:
-        - "<p>A good starting point if you'd like to experience coaching before committing to a longer journey.</p>"
+        - "<p>Summary of the features and benefits included in this plan.</p>"
     price:
       type: string
       title: Price
@@ -52,9 +52,9 @@ props:
         - purple
       meta:enum:
         default: "Inherit"
-        blue: "Radley Blue"
+        blue: "Blue"
         pink: "Pink"
-        purple: "Radley Purple"
+        purple: "Purple"
       default: default
       examples:
         - default
