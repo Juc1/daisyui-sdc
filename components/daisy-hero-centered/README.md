@@ -1,4 +1,4 @@
-# DaisyUI Hero (Banner / Centered) Component (`daisy-hero`)
+# DaisyUI Hero (Banner / Centered) Component (`daisy-hero-centered`)
 
 Universal DaisyUI 5 Hero layout component for Drupal 11 Single Directory Components (SDC) and Drupal Canvas (Experience Builder).
 
@@ -6,7 +6,7 @@ Universal DaisyUI 5 Hero layout component for Drupal 11 Single Directory Compone
 
 Focused on full-width hero banners with centered or left-aligned copy, optional background images with dark opacity overlays, and surface color tokens.
 
-*(For two-column split heroes with side media, see the `daisy-hero-split` component).*
+*(For two-column heroes with side media, see the `daisy-hero-with-figure` component).*
 
 ## Native DaisyUI Layout Patterns
 
@@ -35,7 +35,7 @@ Focused on full-width hero banners with centered or left-aligned copy, optional 
 
 ### 1. Centered Hero with Background Image & Overlay
 ```twig
-{% embed 'daisyui_sdc:daisy-hero' with {
+{% embed 'daisyui_sdc:daisy-hero-centered' with {
   min_height: 'large',
   overlay_opacity: '60',
   background_media: {
@@ -56,7 +56,7 @@ Focused on full-width hero banners with centered or left-aligned copy, optional 
 
 ### 2. Quick Prop Usage
 ```twig
-{{ include('daisyui_sdc:daisy-hero', {
+{{ include('daisyui_sdc:daisy-hero-centered', {
   min_height: 'medium',
   background_color: 'base-200',
   title: 'Welcome to Our Community',

@@ -1,9 +1,9 @@
 {#
 /**
  * @file
- * daisy-hero-split-with-slots.twig
+ * daisy-hero-with-figure-slots.twig
  *
- * Composable DaisyUI Hero Component (Side by Side with Slots).
+ * Composable DaisyUI Hero Component (Hero with figure with slots).
  * Provides a responsive two-column hero layout with figure/media on one side
  * and an open content slot on the other for arbitrary Drupal blocks and components.
  */
@@ -14,7 +14,7 @@
 {% set is_mobile_reverse = mobile_order|default('media-first') == 'content-first' %}
 
 {% set default_media = {
-  src: file_url('modules/custom/daisyui_sdc/components/daisy-hero-split-with-slots/assets/unsplash.jpg'),
+  src: file_url('modules/custom/daisyui_sdc/components/daisy-hero-with-figure-slots/assets/unsplash.jpg'),
   alt: 'Hero media placeholder',
   width: 1200,
   height: 900

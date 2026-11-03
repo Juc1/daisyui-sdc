@@ -1,4 +1,4 @@
-# Daisy Hero (Side by Side) Component (`daisy-hero-split`)
+# Daisy Hero with Figure Component (`daisy-hero-with-figure`)
 
 Turnkey two-column hero layout component for Drupal 11 Single Directory Components (SDC) and Drupal Canvas (Experience Builder).
 
@@ -41,7 +41,7 @@ A pure-prop, slot-free hero banner that renders immediately upon being dragged i
 
 ### 1. Single Centered CTA (Default)
 ```twig
-{{ include('daisyui_sdc:daisy-hero-split', {
+{{ include('daisyui_sdc:daisy-hero-with-figure', {
   title: 'Welcome to Our Clinic',
   text: 'Expert aesthetic and skin health treatments in central London.',
   cta_text: 'Book Consultation',
@@ -51,7 +51,7 @@ A pure-prop, slot-free hero banner that renders immediately upon being dragged i
 
 ### 2. Dual CTAs (Side by Side on Desktop, Stacked on Mobile)
 ```twig
-{{ include('daisyui_sdc:daisy-hero-split', {
+{{ include('daisyui_sdc:daisy-hero-with-figure', {
   title: 'Transform Your Wellness',
   text: 'Discover our comprehensive treatments customized for your lifestyle.',
   cta_text: 'View Treatments',

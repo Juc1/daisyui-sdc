@@ -1,4 +1,4 @@
-# Daisy Hero (Side by Side with Slots) Component (`daisy-hero-split-with-slots`)
+# Daisy Hero with Figure (with Slots) Component (`daisy-hero-with-figure-slots`)
 
 Composable two-column hero layout component for Drupal 11 Single Directory Components (SDC) and Drupal Canvas (Experience Builder).
 
@@ -29,7 +29,7 @@ Designed specifically for complex landing page hero sections requiring arbitrary
 ## Twig Usage Example
 
 ```twig
-{% embed 'daisyui_sdc:daisy-hero-split-with-slots' with {
+{% embed 'daisyui_sdc:daisy-hero-with-figure-slots' with {
   media_position: 'left',
   layout_ratio: '1:1',
   media: {

@@ -1,5 +1,5 @@
 $schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
-name: Daisy Hero (Side by Side with Slots)
+name: Daisy Hero with Figure (with Slots)
 description: "Composable two-column hero layout with side media and an open content slot for nested Drupal blocks, forms, and custom components [DaisyUI: Hero with figure]."
 group: DaisyUI
 status: stable
@@ -12,7 +12,7 @@ props:
       description: "Image displayed alongside content in the split hero [DaisyUI: Hero with figure]."
       type: object
       examples:
-        - src: "/modules/custom/daisyui_sdc/components/daisy-hero-split-with-slots/assets/unsplash.jpg"
+        - src: "/modules/custom/daisyui_sdc/components/daisy-hero-with-figure-slots/assets/unsplash.jpg"
           alt: "Hero media placeholder"
           width: 1200
           height: 900
