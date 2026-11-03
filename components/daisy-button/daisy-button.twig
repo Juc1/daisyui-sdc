@@ -10,9 +10,11 @@
 #}
 
 {# Normalization of props with backward-compatibility fallbacks #}
-{% set target_url = url|default(href)|default('') %}
+{% set raw_url = url|default(href)|default('') %}
+{% set target_url = raw_url is iterable and raw_url.uri is defined ? raw_url.uri : raw_url %}
 {% set has_url = target_url is not empty %}
 {% set button_label = label|default(has_url or icon is not empty ? '' : 'Button') %}
+{% set has_content = has_url or (button_label is not empty) or (aria_label is defined and aria_label is not empty) %}
 {% set button_style = style|default(variant in ['primary', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error', 'ghost', 'link'] ? variant : 'primary') %}
 {% set button_variant = variant in ['solid', 'outline', 'soft', 'dash'] ? variant : (style_modifier|default('solid')) %}
 {% set button_size = size|default('md') %}
@@ -112,51 +114,53 @@
 
 {% import _self as macros %}
 
-{# Button inner contents #}
-{% set button_content %}
-  {% if is_icon_start and button_icon is not empty %}{{ macros.render_icon(button_icon_pack, button_icon) }}{% endif %}
-  {% if button_label is not empty %}<span>{{ button_label }}</span>{% endif %}
-  {% if not is_icon_start and button_icon is not empty %}{{ macros.render_icon(button_icon_pack, button_icon) }}{% endif %}
-{% endset %}
+{% if has_content %}
+  {# Button inner contents #}
+  {% set button_content %}
+    {% if is_icon_start and button_icon is not empty %}{{ macros.render_icon(button_icon_pack, button_icon) }}{% endif %}
+    {% if button_label is not empty %}<span>{{ button_label }}</span>{% endif %}
+    {% if not is_icon_start and button_icon is not empty %}{{ macros.render_icon(button_icon_pack, button_icon) }}{% endif %}
+  {% endset %}
 
-{# Tooltip wrapper #}
-{% if btn_tooltip is not empty %}
-  <span class="tooltip flex-1 flex {{ button_shape == 'block' ? 'w-full block' : '' }}" data-tip="{{ btn_tooltip }}">
-{% endif %}
+  {# Tooltip wrapper #}
+  {% if btn_tooltip is not empty %}
+    <span class="tooltip flex-1 flex {{ button_shape == 'block' ? 'w-full block' : '' }}" data-tip="{{ btn_tooltip }}">
+  {% endif %}
 
-{% if has_url %}
-  {% set button_attributes = button_attributes.setAttribute('href', target_url) %}
-  {% if is_open_new %}
-    {% set button_attributes = button_attributes.setAttribute('target', '_blank').setAttribute('rel', 'noopener noreferrer') %}
+  {% if has_url %}
+    {% set button_attributes = button_attributes.setAttribute('href', target_url) %}
+    {% if is_open_new %}
+      {% set button_attributes = button_attributes.setAttribute('target', '_blank').setAttribute('rel', 'noopener noreferrer') %}
+    {% endif %}
+    {% if is_disabled %}
+      {% set button_attributes = button_attributes.setAttribute('aria-disabled', 'true').setAttribute('tabindex', '-1') %}
+    {% endif %}
+    {% if aria_label is defined and aria_label is not empty %}
+      {% set button_attributes = button_attributes.setAttribute('aria-label', aria_label) %}
+    {% endif %}
+    {% if btn_title is not empty %}
+      {% set button_attributes = button_attributes.setAttribute('title', btn_title) %}
+    {% endif %}
+    <a {{ button_attributes }}>
+      {{ button_content }}
+    </a>
+  {% else %}
+    {% set button_attributes = button_attributes.setAttribute('type', btn_type) %}
+    {% if is_disabled %}
+      {% set button_attributes = button_attributes.setAttribute('disabled', 'disabled').setAttribute('aria-disabled', 'true') %}
+    {% endif %}
+    {% if aria_label is defined and aria_label is not empty %}
+      {% set button_attributes = button_attributes.setAttribute('aria-label', aria_label) %}
+    {% endif %}
+    {% if btn_title is not empty %}
+      {% set button_attributes = button_attributes.setAttribute('title', btn_title) %}
+    {% endif %}
+    <button {{ button_attributes }}>
+      {{ button_content }}
+    </button>
   {% endif %}
-  {% if is_disabled %}
-    {% set button_attributes = button_attributes.setAttribute('aria-disabled', 'true').setAttribute('tabindex', '-1') %}
-  {% endif %}
-  {% if aria_label is defined and aria_label is not empty %}
-    {% set button_attributes = button_attributes.setAttribute('aria-label', aria_label) %}
-  {% endif %}
-  {% if btn_title is not empty %}
-    {% set button_attributes = button_attributes.setAttribute('title', btn_title) %}
-  {% endif %}
-  <a {{ button_attributes }}>
-    {{ button_content }}
-  </a>
-{% else %}
-  {% set button_attributes = button_attributes.setAttribute('type', btn_type) %}
-  {% if is_disabled %}
-    {% set button_attributes = button_attributes.setAttribute('disabled', 'disabled').setAttribute('aria-disabled', 'true') %}
-  {% endif %}
-  {% if aria_label is defined and aria_label is not empty %}
-    {% set button_attributes = button_attributes.setAttribute('aria-label', aria_label) %}
-  {% endif %}
-  {% if btn_title is not empty %}
-    {% set button_attributes = button_attributes.setAttribute('title', btn_title) %}
-  {% endif %}
-  <button {{ button_attributes }}>
-    {{ button_content }}
-  </button>
-{% endif %}
 
-{% if btn_tooltip is not empty %}
-  </span>
+  {% if btn_tooltip is not empty %}
+    </span>
+  {% endif %}
 {% endif %}

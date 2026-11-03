@@ -48,7 +48,7 @@ A flexible, theme-agnostic button component conforming strictly to DaisyUI 5 CSS
 
 ### 1. Basic Action Button
 ```twig
-{{ include('mytheme:daisy-button', {
+{{ include('daisyui_sdc:daisy-button', {
   label: 'Get Started',
   url: '/register',
   style: 'primary'
@@ -57,7 +57,7 @@ A flexible, theme-agnostic button component conforming strictly to DaisyUI 5 CSS
 
 ### 2. Outline Button with Right Icon
 ```twig
-{{ include('mytheme:daisy-button', {
+{{ include('daisyui_sdc:daisy-button', {
   label: 'Learn More',
   url: '/about',
   style: 'secondary',
@@ -69,7 +69,7 @@ A flexible, theme-agnostic button component conforming strictly to DaisyUI 5 CSS
 
 ### 3. Icon-Only Circle Button with Tooltip
 ```twig
-{{ include('mytheme:daisy-button', {
+{{ include('daisyui_sdc:daisy-button', {
   icon: 'share-network',
   shape: 'circle',
   style: 'ghost',
@@ -80,7 +80,7 @@ A flexible, theme-agnostic button component conforming strictly to DaisyUI 5 CSS
 
 ### 4. Button with Suffix Badge via Slot
 ```twig
-{% embed 'mytheme:daisy-button' with {
+{% embed 'daisyui_sdc:daisy-button' with {
   label: 'Inbox',
   style: 'neutral'
 } only %}
