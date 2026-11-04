@@ -14,7 +14,7 @@
 {% set target_url = raw_url is iterable and raw_url.uri is defined ? raw_url.uri : raw_url %}
 {% set has_url = target_url is not empty %}
 {% set button_label = label|default(has_url or icon is not empty ? '' : 'Button') %}
-{% set has_content = has_url or (button_label is not empty) or (aria_label is defined and aria_label is not empty) %}
+{% set has_content = has_url or (button_label is not empty) or (btn_type in ['submit', 'reset'] and (button_icon is not empty or (aria_label is defined and aria_label is not empty))) %}
 {% set button_style = style|default(variant in ['primary', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error', 'ghost', 'link'] ? variant : 'primary') %}
 {% set button_variant = variant in ['solid', 'outline', 'soft', 'dash'] ? variant : (style_modifier|default('solid')) %}
 {% set button_size = size|default('md') %}
