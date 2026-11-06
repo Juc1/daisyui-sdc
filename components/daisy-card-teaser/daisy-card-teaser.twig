@@ -9,6 +9,7 @@
 #}
 
 {% set card_orientation = orientation|default('vertical') %}
+{% set card_height = height|default('full') %}
 {% set card_style = style|default('full') %}
 {% set card_background = background|default('default') %}
 {% set card_size = size|default('md') %}
@@ -21,6 +22,27 @@
 {% set has_media = media is defined and media.src is not empty %}
 {% set has_border_top = border_top|default(false) %}
 {% set top_border_color = border_top_color|default('primary') %}
+{% set card_icon = icon is defined ? icon : 'flower-lotus' %}
+{% set card_icon_pack = icon_pack|default('phosphor') %}
+{% set card_icon_position = icon_position|default('top-center') %}
+{% set card_icon_style = icon_style|default('plain') %}
+{% set has_icon = card_icon is not empty and card_icon != 'none' %}
+
+{% macro render_card_icon(icon_pack, icon_name, icon_style) %}
+  {% if icon_name is not empty and icon_name != 'none' %}
+    {% if icon_style == 'badge' %}
+      <span class="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary [&>svg]:size-6" aria-hidden="true">
+        {{ icon(icon_pack, icon_name, { color: 'currentColor' }) }}
+      </span>
+    {% else %}
+      <span class="inline-flex size-8 shrink-0 items-center justify-center text-primary [&>svg]:size-full" aria-hidden="true">
+        {{ icon(icon_pack, icon_name, { color: 'currentColor' }) }}
+      </span>
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+{% import _self as macros %}
 
 {# Normalize card_classes #}
 {% set extra_classes = card_classes|default('') %}
@@ -85,11 +107,16 @@
   'base-300': 'border-t-base-300'
 } %}
 
+{% set height_classes = {
+  auto: 'self-start h-auto! in-[.views-row]:h-full! in-[.views-row]:self-stretch!',
+  full: 'h-full self-stretch'
+} %}
+
 {# Build card class list #}
 {% set classes = [
   'card',
   'w-full',
-  'self-start h-auto! in-[.views-row]:h-full! in-[.views-row]:self-stretch!',
+  height_classes[card_height]|default(height_classes.full),
   'group relative',
   'transition duration-300',
   orientation_classes[card_orientation]|default(''),
@@ -120,6 +147,21 @@
 {% endif %}
 
 <article {{ card_attributes }}>
+  {# Optional top-right corner icon indicator #}
+  {% if has_icon and card_icon_position == 'top-right' %}
+    <div class="pointer-events-none absolute top-3 right-3 z-20">
+      {% if card_icon_style == 'badge' %}
+        <span class="inline-flex size-9 items-center justify-center rounded-lg bg-base-100/80 text-base-content backdrop-blur-xs shadow-xs [&>svg]:size-5" aria-hidden="true">
+          {{ icon(card_icon_pack, card_icon, { color: 'currentColor' }) }}
+        </span>
+      {% else %}
+        <span class="inline-flex size-7 items-center justify-center text-base-content/80 hover:text-primary transition-colors [&>svg]:size-full" aria-hidden="true">
+          {{ icon(card_icon_pack, card_icon, { color: 'currentColor' }) }}
+        </span>
+      {% endif %}
+    </div>
+  {% endif %}
+
   {% if has_media %}
     <figure class="{{ figure_classes }}">
       <img
@@ -138,9 +180,16 @@
     </figure>
   {% endif %}
 
-  <div class="card-body in-[.views-row]:flex-1 flex flex-col {{ is_centered ? 'items-center text-center' : 'items-start text-left' }}">
+  <div class="card-body {{ card_height == 'full' ? 'flex-1' : '' }} in-[.views-row]:flex-1 flex flex-col {{ is_centered ? 'items-center text-center' : 'items-start text-left' }}">
     <div class="@container flex w-full flex-col gap-1 md:gap-2">
       
+      {# Optional top feature icon (top-left or top-center) #}
+      {% if has_icon and (card_icon_position == 'top-left' or card_icon_position == 'top-center') %}
+        <div class="mb-1 {{ card_icon_position == 'top-center' or is_centered ? 'self-center' : 'self-start' }}">
+          {{ macros.render_card_icon(card_icon_pack, card_icon, card_icon_style) }}
+        </div>
+      {% endif %}
+
       {# Optional category badge #}
       {% if category is defined and category is not empty %}
         <div class="mb-1">
@@ -150,12 +199,34 @@
 
       {# Title with stretched link #}
       {% if heading_text is defined and heading_text is not empty %}
-        {% set heading_classes = 'card-title text-xl font-semibold @sm:text-2xl @2xl:text-3xl' %}
+        {% set heading_classes = 'card-title text-xl font-semibold @sm:text-2xl @2xl:text-3xl text-center justify-center' %}
         {% set heading_content %}
           {% if has_url %}
-            <a href="{{ target_url }}" class="no-underline hover:no-underline after:absolute after:inset-0 after:content-['']" style="text-decoration: none;">{{ heading_text }}</a>
+            <a href="{{ target_url }}" class="no-underline hover:no-underline after:absolute after:inset-0 after:content-['']" style="text-decoration: none;">
+              {%- if has_icon and card_icon_position == 'title-start' -%}
+                <span class="inline-flex size-[1.1em] shrink-0 items-center justify-center mr-1.5 align-middle text-primary [&>svg]:size-full" aria-hidden="true">
+                  {{ icon(card_icon_pack, card_icon, { color: 'currentColor' }) }}
+                </span>
+              {%- endif -%}
+              {{ heading_text }}
+              {%- if has_icon and card_icon_position == 'title-end' -%}
+                <span class="inline-flex size-[1.1em] shrink-0 items-center justify-center ml-1.5 align-middle text-primary [&>svg]:size-full transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true">
+                  {{ icon(card_icon_pack, card_icon, { color: 'currentColor' }) }}
+                </span>
+              {%- endif -%}
+            </a>
           {% else %}
+            {%- if has_icon and card_icon_position == 'title-start' -%}
+              <span class="inline-flex size-[1.1em] shrink-0 items-center justify-center mr-1.5 align-middle text-primary [&>svg]:size-full" aria-hidden="true">
+                {{ icon(card_icon_pack, card_icon, { color: 'currentColor' }) }}
+              </span>
+            {%- endif -%}
             {{ heading_text }}
+            {%- if has_icon and card_icon_position == 'title-end' -%}
+              <span class="inline-flex size-[1.1em] shrink-0 items-center justify-center ml-1.5 align-middle text-primary [&>svg]:size-full" aria-hidden="true">
+                {{ icon(card_icon_pack, card_icon, { color: 'currentColor' }) }}
+              </span>
+            {%- endif -%}
           {% endif %}
         {% endset %}
 
@@ -185,10 +256,22 @@
       {% endif %}
     </div>
 
-    {# Optional publication date or reading time metadata pinned to card bottom #}
-    {% if date is defined and date is not empty %}
-      <div class="mt-auto pt-3 text-xs md:text-sm opacity-70 font-medium">
-        {{ date }}
+    {# Optional publication date, metadata, and bottom-right icon pinned to card bottom #}
+    {% set has_bottom_icon = has_icon and card_icon_position == 'bottom-right' %}
+    {% if (date is defined and date is not empty) or has_bottom_icon %}
+      <div class="mt-auto flex w-full items-center justify-between pt-3 text-xs md:text-sm">
+        {% if date is defined and date is not empty %}
+          <span class="opacity-70 font-medium">{{ date }}</span>
+        {% else %}
+          <span></span>
+        {% endif %}
+        {% if has_bottom_icon %}
+          <span class="text-primary transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+            <span class="inline-flex size-5 shrink-0 items-center justify-center [&>svg]:size-full">
+              {{ icon(card_icon_pack, card_icon, { color: 'currentColor' }) }}
+            </span>
+          </span>
+        {% endif %}
       </div>
     {% endif %}
   </div>

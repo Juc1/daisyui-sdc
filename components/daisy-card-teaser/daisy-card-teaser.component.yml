@@ -85,6 +85,54 @@ props:
       description: "Optional metadata text displayed at the bottom (e.g. 'Oct 25, 2026' or '5 min read')."
       examples:
         - "Oct 25, 2026"
+    icon:
+      type: string
+      title: Icon Name
+      description: "Optional icon identifier from the icon pack (e.g. 'flower-lotus', 'rocket', 'arrow-up-right', 'star', 'check')."
+      default: "flower-lotus"
+      examples:
+        - "flower-lotus"
+    icon_position:
+      type: string
+      title: Icon Position
+      description: "Placement of the icon within the card."
+      enum:
+        - top-left
+        - top-center
+        - top-right
+        - title-start
+        - title-end
+        - bottom-right
+      default: top-center
+      meta:enum:
+        top-left: "Top Left (Feature header)"
+        top-center: "Top Centered"
+        top-right: "Top Right (Corner indicator)"
+        title-start: "Before Title"
+        title-end: "After Title"
+        bottom-right: "Bottom Right (Trailing arrow)"
+      examples:
+        - top-center
+    icon_style:
+      type: string
+      title: Icon Style
+      description: "Visual container style for header/corner icons."
+      enum:
+        - plain
+        - badge
+      default: plain
+      meta:enum:
+        plain: "Plain (Raw icon)"
+        badge: "Enclosed Badge (Soft surface box)"
+      examples:
+        - plain
+    icon_pack:
+      type: string
+      title: Icon Pack
+      description: "Icon pack identifier used by Drupal core Icon API."
+      default: phosphor
+      examples:
+        - phosphor
     is_text_centered:
       type: boolean
       title: Center Text
@@ -103,6 +151,18 @@ props:
         horizontal: "Horizontal (Side-by-side)"
       examples:
         - vertical
+    height:
+      type: string
+      title: Card Height
+      enum:
+        - auto
+        - full
+      default: full
+      meta:enum:
+        auto: "Auto (Fits content)"
+        full: "Full (Equal height in grid / section)"
+      examples:
+        - full
     style:
       type: string
       title: Style Mode

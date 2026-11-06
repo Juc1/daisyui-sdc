@@ -67,9 +67,7 @@
   <div class="hero-content max-w-none w-full px-4 py-8 md:py-12 {{ is_centered ? 'text-center' : 'text-left' }}">
     <div class="flex flex-col gap-4 md:gap-6 {{ is_centered ? 'items-center mx-auto' : 'items-start' }} {{ max_w_map[content_max_width|default('lg')]|default('max-w-2xl') }}">
       {% block content %}
-        {% if content is defined and content is not empty %}
-          {{ content }}
-        {% elseif title is not empty or text is not empty %}
+        {% if title is not empty or text is not empty %}
           {% if title is not empty %}
             {% set h_tag = title_level|default(1) in [1, 2, 3, 4, 5, 6] ? ('h' ~ title_level|default(1)) : 'h1' %}
             {% set title_size_map = {
@@ -92,6 +90,8 @@
               <a href="{{ cta_url }}" class="btn btn-primary">{{ cta_text }}</a>
             </div>
           {% endif %}
+        {% elseif content is defined and content is not empty %}
+          {{ content }}
         {% endif %}
       {% endblock %}
     </div>

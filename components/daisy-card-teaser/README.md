@@ -26,7 +26,12 @@ Streamlined, pure-prop teaser card component built specifically for Drupal **Vie
 | `text` | `string` (html) | `""` | Summary / excerpt text. |
 | `category` | `string` | `"Category / tag"` | Optional top category badge (e.g. "News", "Category / tag"). |
 | `date` | `string` | `""` | Optional metadata pinned to the bottom (e.g. "Oct 25, 2026", "5 min read"). |
+| `icon` | `string` | `"flower-lotus"` | Optional icon identifier from icon pack (e.g. `'flower-lotus'`, `'rocket'`, `'star'`). |
+| `icon_position` | `enum` | `'top-center'` | `'top-left'`, `'top-center'`, `'top-right'`, `'title-start'`, `'title-end'`, `'bottom-right'`. |
+| `icon_style` | `enum` | `'plain'` | `'plain'`, `'badge'`. |
+| `icon_pack` | `string` | `'phosphor'` | Icon pack identifier for Drupal core Icon API. |
 | `orientation` | `enum` | `'vertical'` | `'vertical'`, `'horizontal'`. |
+| `height` | `enum` | `'full'` | `'auto'` (shrink to fit), `'full'` (stretch to equal height in grid/section). |
 | `style` | `enum` | `'full'` | `'full'`, `'framed'`, `'border'`, `'dash'`. |
 | `size` | `enum` | `'md'` | `'sm'`, `'md'`, `'lg'`, `'xl'`. |
 | `background` | `enum` | `'default'` | `'default'`, `'base-200'`, `'base-300'`, `'primary'`, `'secondary'`, `'accent'`, `'neutral'`, `'transparent'`. |
