@@ -11,6 +11,8 @@
 {% set card_orientation = orientation|default('vertical') %}
 {% set card_height = height|default('full') %}
 {% set card_style = style|default('full') %}
+{% set card_border_width = border_width|default('default') %}
+{% set card_border_color = border_color|default('default') %}
 {% set card_background = background|default('default') %}
 {% set card_size = size|default('md') %}
 {% set card_shadow = shadow|default('xl') %}
@@ -74,6 +76,27 @@
   dash: 'card-dash'
 } %}
 
+{% set border_width_classes = {
+  default: '',
+  '1': 'border',
+  '2': 'border-2',
+  '4': 'border-4'
+} %}
+
+{% set border_color_classes = {
+  default: '',
+  'base-200': 'border-base-200',
+  'base-300': 'border-base-300',
+  primary: 'border-primary',
+  secondary: 'border-secondary',
+  accent: 'border-accent',
+  neutral: 'border-neutral',
+  info: 'border-info',
+  success: 'border-success',
+  warning: 'border-warning',
+  error: 'border-error'
+} %}
+
 {% set size_classes = {
   sm: 'card-sm',
   md: '',
@@ -121,6 +144,9 @@
   'transition duration-300',
   orientation_classes[card_orientation]|default(''),
   style_classes[card_style]|default(''),
+  card_style not in ['border', 'dash'] and card_border_width in ['1', '2', '4'] ? 'card-border' : '',
+  border_width_classes[card_border_width]|default(''),
+  border_color_classes[card_border_color]|default(''),
   background_classes[card_background]|default(background_classes.default),
   size_classes[card_size]|default(''),
   shadow_classes[card_shadow]|default('shadow-xl'),

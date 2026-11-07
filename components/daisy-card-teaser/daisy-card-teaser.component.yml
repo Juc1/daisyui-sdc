@@ -179,6 +179,54 @@ props:
         dash: "Dashed border (card-dash)"
       examples:
         - full
+    border_width:
+      type: string
+      title: Border Width
+      description: "Border thickness when using Bordered/Dashed style or setting a custom border."
+      enum:
+        - default
+        - "1"
+        - "2"
+        - "4"
+      default: default
+      meta:enum:
+        default: "Default (1px)"
+        "1": "1px"
+        "2": "2px"
+        "4": "4px"
+      examples:
+        - default
+    border_color:
+      type: string
+      title: Border Color
+      description: "Border color when using Bordered/Dashed style or setting a custom border."
+      enum:
+        - default
+        - base-200
+        - base-300
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - info
+        - success
+        - warning
+        - error
+      default: default
+      meta:enum:
+        default: "Default (Base 200)"
+        base-200: "Base 200"
+        base-300: "Base 300"
+        primary: "Primary"
+        secondary: "Secondary"
+        accent: "Accent"
+        neutral: "Neutral"
+        info: "Info"
+        success: "Success"
+        warning: "Warning"
+        error: "Error"
+      examples:
+        - default
     size:
       type: string
       title: Size
