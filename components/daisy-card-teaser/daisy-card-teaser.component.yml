@@ -212,6 +212,8 @@ props:
         - success
         - warning
         - error
+        - gainsboro
+        - silver
       default: default
       meta:enum:
         default: "Default (Base 200)"
@@ -225,6 +227,8 @@ props:
         success: "Success"
         warning: "Warning"
         error: "Error"
+        gainsboro: "Gainsboro"
+        silver: "Silver"
       examples:
         - default
     size:
@@ -304,6 +308,8 @@ props:
         - accent
         - neutral
         - base-300
+        - gainsboro
+        - silver
       default: primary
       meta:enum:
         primary: Primary
@@ -311,6 +317,8 @@ props:
         accent: Accent
         neutral: Neutral
         base-300: Base 300
+        gainsboro: Gainsboro
+        silver: Silver
       examples:
         - primary
     card_classes:

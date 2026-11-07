@@ -34,7 +34,7 @@ Streamlined, pure-prop teaser card component built specifically for Drupal **Vie
 | `height` | `enum` | `'full'` | `'auto'` (shrink to fit), `'full'` (stretch to equal height in grid/section). |
 | `style` | `enum` | `'full'` | `'full'`, `'framed'`, `'border'`, `'dash'`. |
 | `border_width` | `enum` | `'default'` | `'default'` (1px), `'1'` (1px), `'2'` (2px), `'4'` (4px). |
-| `border_color` | `enum` | `'default'` | `'default'` (Base 200), `'base-200'`, `'base-300'`, `'primary'`, `'secondary'`, `'accent'`, `'neutral'`, `'info'`, `'success'`, `'warning'`, `'error'`. |
+| `border_color` | `enum` | `'default'` | `'default'` (Base 200), `'base-200'`, `'base-300'`, `'primary'`, `'secondary'`, `'accent'`, `'neutral'`, `'info'`, `'success'`, `'warning'`, `'error'`, `'gainsboro'`, `'silver'`. |
 | `size` | `enum` | `'md'` | `'sm'`, `'md'`, `'lg'`, `'xl'`. |
 | `background` | `enum` | `'default'` | `'default'`, `'base-200'`, `'base-300'`, `'primary'`, `'secondary'`, `'accent'`, `'neutral'`, `'transparent'`. |
 | `shadow` | `enum` | `'xl'` | `'none'`, `'sm'`, `'md'`, `'lg'`, `'xl'`, `'2xl'`. |
