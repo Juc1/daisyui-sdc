@@ -78,7 +78,28 @@
               h5: 'text-base sm:text-xl lg:text-2xl',
               h6: 'text-base sm:text-lg lg:text-xl'
             } %}
-            <{{ h_tag }} class="{{ title_size_map[h_tag]|default('text-3xl sm:text-5xl lg:text-6xl') }} font-bold tracking-tight">{{ title }}</{{ h_tag }}>
+            {% set highlight_color_map = {
+              primary: 'text-primary',
+              secondary: 'text-secondary',
+              accent: 'text-accent',
+              info: 'text-info',
+              success: 'text-success',
+              warning: 'text-warning',
+              error: 'text-error'
+            } %}
+            {% set hl_class = highlight_color_map[title_highlight_color|default('primary')]|default('text-primary') %}
+            <{{ h_tag }} class="{{ title_size_map[h_tag]|default('text-3xl sm:text-5xl lg:text-6xl') }} font-bold tracking-tight">
+              {%- for chunk in title|split('[') -%}
+                {%- if loop.first -%}
+                  {{ chunk }}
+                {%- elseif ']' in chunk -%}
+                  {%- set subparts = chunk|split(']', 2) -%}
+                  <span class="{{ hl_class }}">{{ subparts[0] }}</span>{{ subparts[1]|default('') }}
+                {%- else -%}
+                  [{{ chunk }}
+                {%- endif -%}
+              {%- endfor -%}
+            </{{ h_tag }}>
           {% endif %}
           {% if text is not empty %}
             <div class="py-2 text-lg md:text-xl opacity-90 [&_p]:mb-2 [&_p:last-child]:mb-0">

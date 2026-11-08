@@ -116,9 +116,32 @@ props:
     title:
       type: string
       title: Headline Title
-      description: "Quick prop for hero title when not using the content slot."
+      description: "Quick prop for hero title. Wrap words in [brackets] to highlight them in the selected Title Highlight Color."
       examples:
-        - "Hello there"
+        - "Build [digital experiences] that matter"
+    title_highlight_color:
+      type: string
+      title: Title Highlight Color
+      description: "Semantic DaisyUI color applied to words wrapped in [brackets] inside the Headline Title."
+      enum:
+        - primary
+        - secondary
+        - accent
+        - info
+        - success
+        - warning
+        - error
+      meta:enum:
+        primary: "Primary"
+        secondary: "Secondary"
+        accent: "Accent"
+        info: "Info"
+        success: "Success"
+        warning: "Warning"
+        error: "Error"
+      default: primary
+      examples:
+        - primary
     title_level:
       type: integer
       title: Heading Level
