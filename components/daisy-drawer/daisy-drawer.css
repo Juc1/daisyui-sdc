@@ -1,0 +1,80 @@
+/* Responsive visibility: hamburger trigger button vs desktop menu */
+@media (min-width: 768px) {
+  .drawer-content .desktop-menu,
+  .drawer-content .md\:flex {
+    display: flex !important;
+  }
+
+  [data-drawer-trigger].md\:hidden,
+  .swap.md\:hidden {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .drawer-content .desktop-menu,
+  .drawer-content .hidden,
+  .drawer-content .max-md\:hidden {
+    display: none !important;
+  }
+
+  [data-drawer-trigger].md\:hidden,
+  .swap.md\:hidden {
+    display: inline-grid !important;
+    position: relative !important;
+  }
+}
+
+.swap.swap-rotate {
+  position: relative;
+}
+
+.swap.swap-rotate > * {
+  grid-row-start: 1 !important;
+  grid-column-start: 1 !important;
+  transition: transform 0.25s ease-in-out, rotate 0.25s ease-in-out, opacity 0.25s ease-in-out !important;
+}
+
+/* Sync DaisyUI .swap with .drawer-toggle checkbox state in pure CSS */
+.drawer-toggle:checked ~ .drawer-content .swap .swap-off {
+  opacity: 0 !important;
+  rotate: -45deg !important;
+  transform: rotate(-45deg) !important;
+  pointer-events: none;
+}
+
+.drawer-toggle:checked ~ .drawer-content .swap .swap-on {
+  opacity: 1 !important;
+  rotate: 0deg !important;
+  transform: rotate(0deg) !important;
+  pointer-events: auto;
+}
+
+.drawer-toggle:not(:checked) ~ .drawer-content .swap .swap-off {
+  opacity: 1 !important;
+  rotate: 0deg !important;
+  transform: rotate(0deg) !important;
+  pointer-events: auto;
+}
+
+.drawer-toggle:not(:checked) ~ .drawer-content .swap .swap-on {
+  opacity: 0 !important;
+  rotate: 45deg !important;
+  transform: rotate(45deg) !important;
+  pointer-events: none;
+}
+
+/* Fallback for when swap-active class is toggled by JS */
+.swap.swap-active .swap-off {
+  opacity: 0 !important;
+  rotate: -45deg !important;
+  transform: rotate(-45deg) !important;
+  pointer-events: none;
+}
+
+.swap.swap-active .swap-on {
+  opacity: 1 !important;
+  rotate: 0deg !important;
+  transform: rotate(0deg) !important;
+  pointer-events: auto;
+}

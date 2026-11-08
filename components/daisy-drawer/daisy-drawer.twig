@@ -1,0 +1,88 @@
+{#
+/**
+ * @file
+ * DaisyUI Drawer component with animated Phosphor hamburger/close swap toggle.
+ */
+#}
+
+{% set drawer_id = id|default('drawer-' ~ random(1000, 9999)) %}
+{% set is_end = (position|default('end')) == 'end' %}
+{% set icon_open_name = icon_open|default('list') %}
+{% set icon_close_name = icon_close|default('x') %}
+{% set icon_pack_name = icon_pack|default('phosphor') %}
+{% set drawer_title = title|default('Menu'|t) %}
+{% set btn_style = button_style|default('ghost') %}
+{% set btn_shape = button_shape|default('circle') %}
+{% set btn_size = button_size|default('md') %}
+{% set trigger_classes = button_classes|default('md:hidden') %}
+{% set panel_width = drawer_width|default('w-80') %}
+{% set show_close_btn = show_close_button is defined ? show_close_button : true %}
+
+{% set button_classes_list = [
+  'btn',
+  'cursor-pointer',
+  btn_style != 'default' ? 'btn-' ~ btn_style : '',
+  btn_shape != 'default' ? 'btn-' ~ btn_shape : '',
+  btn_size != 'md' ? 'btn-' ~ btn_size : '',
+  'swap swap-rotate',
+  trigger_classes
+]|filter(c => c is not empty)|join(' ') %}
+
+<div class="drawer {{ is_end ? 'drawer-end' : '' }} {{ utility_classes|default('') }}" data-daisy-drawer>
+  {# Hidden toggle checkbox #}
+  <input id="{{ drawer_id }}" type="checkbox" class="drawer-toggle" aria-label="{{ 'Toggle navigation drawer'|t }}" />
+
+  {# Drawer Content Area (Header / Page / Trigger) #}
+  <div class="drawer-content flex items-center justify-end w-full">
+    {% block content %}
+      {# Main or desktop content (e.g. desktop menu) #}
+    {% endblock %}
+
+    {# Hamburger / Swap Trigger Button #}
+    <label for="{{ drawer_id }}" class="{{ button_classes_list }}" aria-label="{{ 'Toggle navigation'|t }}" data-drawer-trigger>
+      {# Hamburger icon (shown when closed) #}
+      <span class="swap-off flex items-center justify-center">
+        {{ icon(icon_pack_name, icon_open_name, { color: 'currentColor' }) }}
+      </span>
+      {# Close icon (shown when open) #}
+      <span class="swap-on flex items-center justify-center">
+        {{ icon(icon_pack_name, icon_close_name, { color: 'currentColor' }) }}
+      </span>
+    </label>
+  </div>
+
+  {# Slide-over Drawer Side #}
+  <div class="drawer-side z-50">
+    {# Clickable backdrop overlay #}
+    <label for="{{ drawer_id }}" class="drawer-overlay" aria-label="{{ 'Close drawer'|t }}"></label>
+
+    {# Drawer Panel #}
+    <div class="bg-base-100 text-base-content min-h-full {{ panel_width }} p-6 flex flex-col justify-between shadow-2xl">
+      <div class="flex flex-col gap-4">
+        {# Drawer Header #}
+        <div class="flex items-center justify-between border-b border-base-300 pb-4">
+          <span class="font-bold text-lg text-base-content">{{ drawer_title }}</span>
+          {% if show_close_btn %}
+            <label for="{{ drawer_id }}" class="btn btn-ghost btn-circle btn-sm cursor-pointer" aria-label="{{ 'Close menu'|t }}">
+              {{ icon(icon_pack_name, icon_close_name, { color: 'currentColor' }) }}
+            </label>
+          {% endif %}
+        </div>
+
+        {# Drawer Body / Navigation Slot #}
+        <nav class="flex flex-col gap-2">
+          {% block drawer_content %}
+            {{ drupal_menu('main') }}
+          {% endblock %}
+        </nav>
+      </div>
+
+      {# Optional Actions / Footer Slot #}
+      {% if block('actions') is defined and block('actions') is not empty %}
+        <div class="pt-6 border-t border-base-300">
+          {% block actions %}{% endblock %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

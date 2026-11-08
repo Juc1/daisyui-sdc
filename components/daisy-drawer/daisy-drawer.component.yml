@@ -1,0 +1,147 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Daisy Drawer
+description: "DaisyUI slide-over drawer and mobile navigation component featuring animated Phosphor hamburger/close swap toggle, backdrop overlay, DaisyUI semantic colors, and configurable slots."
+group: DaisyUI
+status: stable
+props:
+  type: object
+  properties:
+    id:
+      type: string
+      title: Drawer ID
+      description: "Unique HTML ID for the drawer toggle checkbox."
+      default: "mobile-drawer"
+      examples:
+        - "main-navigation-drawer"
+    title:
+      type: string
+      title: Drawer Title
+      description: "Heading text displayed in the drawer header."
+      default: "Menu"
+      examples:
+        - "Navigation"
+    position:
+      type: string
+      title: Drawer Position
+      description: "Side from which the drawer slides out."
+      enum:
+        - end
+        - start
+      meta:enum:
+        end: "Right (drawer-end)"
+        start: "Left (drawer-start)"
+      default: end
+      examples:
+        - end
+    button_style:
+      type: string
+      title: Button Style / Color
+      description: "DaisyUI semantic button style role."
+      enum:
+        - ghost
+        - primary
+        - secondary
+        - accent
+        - neutral
+      meta:enum:
+        ghost: Ghost
+        primary: Primary
+        secondary: Secondary
+        accent: Accent
+        neutral: Neutral
+      default: ghost
+      examples:
+        - ghost
+    button_shape:
+      type: string
+      title: Button Shape
+      description: "Shape modifier for the trigger button."
+      enum:
+        - circle
+        - square
+        - default
+      meta:enum:
+        circle: Circle
+        square: Square
+        default: Default / Rectangle
+      default: circle
+      examples:
+        - circle
+    button_size:
+      type: string
+      title: Button Size
+      enum:
+        - sm
+        - md
+        - lg
+      meta:enum:
+        sm: Small
+        md: Medium
+        lg: Large
+      default: md
+      examples:
+        - md
+    drawer_width:
+      type: string
+      title: Drawer Width
+      description: "Tailwind width class for the sliding drawer panel."
+      default: "w-80"
+      examples:
+        - "w-80"
+        - "w-72"
+        - "max-w-xs"
+    icon_open:
+      type: string
+      title: Open Icon Name
+      description: "Icon shown when drawer is closed (default: 'list')."
+      default: "list"
+      examples:
+        - "list"
+    icon_close:
+      type: string
+      title: Close Icon Name
+      description: "Icon shown when drawer is open (default: 'x')."
+      default: "x"
+      examples:
+        - "x"
+    icon_pack:
+      type: string
+      title: Icon Pack
+      description: "Icon pack identifier for Drupal core Icon API (default: 'phosphor')."
+      default: "phosphor"
+      examples:
+        - "phosphor"
+    button_classes:
+      type: string
+      title: Trigger Button Classes
+      description: "Utility classes for the trigger button (e.g., 'md:hidden')."
+      default: "md:hidden"
+      examples:
+        - "md:hidden"
+    utility_classes:
+      type: string
+      title: Utility Classes
+      description: "Additional Tailwind utility classes for the outer .drawer container."
+      default: ""
+    show_close_button:
+      type: boolean
+      title: Show Drawer Close Button
+      description: "Whether to render a close button inside the drawer header (default: true). Set to false when trigger button is fixed and transforms into the close button."
+      default: true
+      examples:
+        - true
+        - false
+slots:
+  content:
+    title: "Main / Desktop Content"
+    description: "Header or page content placed in the drawer-content area (e.g. desktop menu)."
+  drawer_content:
+    title: "Drawer Content"
+    description: "Navigation items or widgets placed inside the sliding drawer panel."
+  actions:
+    title: "Drawer Actions"
+    description: "Optional secondary widgets or controls at the bottom of the drawer panel."
+libraryOverrides:
+  dependencies:
+    - core/drupal
+    - core/once
