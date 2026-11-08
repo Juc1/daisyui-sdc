@@ -24,6 +24,57 @@ Focused on full-width hero banners with centered or left-aligned copy, optional 
 | `content_max_width`| `string` | `"lg"` | Max width constraint: `sm` (md), `md` (xl), `lg` (2xl), `xl` (4xl), `2xl` (6xl), `full`. |
 | `text_align` | `string` | `"center"` | Alignment: `center` [Centered hero] or `left`. |
 | `data_theme` | `string` | `""` | Optional DaisyUI theme name applied directly to the hero via `data-theme`. |
+| `title` | `string` | `""` | Headline title text. Wrap any word(s) in `[brackets]` to highlight them in the `title_highlight_color`. |
+| `title_highlight_color` | `string` | `"primary"` | Color token for bracketed words: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `error`. |
+| `title_level` | `integer` | `1` | HTML heading level `1`-`6` (`h1` through `h6`). |
+| `text` | `string` | `""` | Descriptive body copy / subtitle. |
+| `cta_text` | `string` | `""` | Call-to-action button label. |
+| `cta_url` | `string` | `""` | Call-to-action button destination URL. |
+
+## Bracket Title Highlighting
+
+You can highlight one or more words in a different DaisyUI color without writing HTML or requiring a full Markdown parser. Wrap the target words in `[brackets]` in the `title` prop:
+
+```twig
+title: "Build [digital experiences] that matter"
+title_highlight_color: "accent"
+```
+
+### Twig String-Splitting Logic
+The component parses bracketed words using pure Twig string splitting with zero dependencies or overhead:
+
+```twig
+{% set highlight_color_map = {
+  primary: 'text-primary',
+  secondary: 'text-secondary',
+  accent: 'text-accent',
+  info: 'text-info',
+  success: 'text-success',
+  warning: 'text-warning',
+  error: 'text-error'
+} %}
+{% set hl_class = highlight_color_map[title_highlight_color|default('primary')]|default('text-primary') %}
+
+<{{ h_tag }} class="{{ title_size_map[h_tag] }} font-bold tracking-tight">
+  {%- for chunk in title|split('[') -%}
+    {%- if loop.first -%}
+      {{ chunk }}
+    {%- elseif ']' in chunk -%}
+      {%- set subparts = chunk|split(']', 2) -%}
+      <span class="{{ hl_class }}">{{ subparts[0] }}</span>{{ subparts[1]|default('') }}
+    {%- else -%}
+      [{{ chunk }}
+    {%- endif -%}
+  {%- endfor -%}
+</{{ h_tag }}>
+```
+
+This renders:
+```html
+<h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+  Build <span class="text-accent">digital experiences</span> that matter
+</h1>
+```
 
 ## Slots
 
@@ -54,12 +105,13 @@ Focused on full-width hero banners with centered or left-aligned copy, optional 
 {% endembed %}
 ```
 
-### 2. Quick Prop Usage
+### 2. Quick Prop Usage with Bracket Highlighting
 ```twig
 {{ include('daisyui_sdc:daisy-hero-centered', {
   min_height: 'medium',
   background_color: 'base-200',
-  title: 'Welcome to Our Community',
+  title: 'Welcome to Our [Community]',
+  title_highlight_color: 'primary',
   text: '<p>Join thousands of developers creating accessible web apps.</p>',
   cta_text: 'Join Now',
   cta_url: '/join'
